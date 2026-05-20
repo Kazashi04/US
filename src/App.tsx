@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { PropertyGrid } from './components/PropertyGrid';
@@ -12,7 +13,6 @@ import { LandlordHub } from './pages/LandlordHub';
 import { useAuth } from './contexts/AuthContext';
 
 function App() {
-  const [page, setPage] = useState<'home' | 'details' | 'hub'>('home');
   const [selectedPropertyId, setSelectedPropertyId] = useState<string>('1');
   const [searchQuery, setSearchQuery] = useState('');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -24,6 +24,7 @@ function App() {
   const [isMapOpen, setIsMapOpen] = useState(false);
   
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -52,7 +53,7 @@ function App() {
 
   const handleSelectProperty = (id: string) => {
     setSelectedPropertyId(id);
-    setPage('details');
+    navigate(`/property/${id}`);
   };
 
   const handleLoginSuccess = () => {
@@ -76,58 +77,67 @@ function App() {
     } else if (user.userType !== 'landlord') {
       showToast('Only landlords can list properties');
     } else {
-      setPage('hub');
+      navigate('/landlord-hub');
     }
   };
 
+  // Home Page Component
+  const HomePage = () => (
+    <>
+      <Navbar 
+        currentPage="home" 
+        onNavigate={(p) => {
+          if (p === 'home') navigate('/');
+          if (p === 'hub') handleNavigateToHub();
+        }}
+        onOpenLogin={() => setIsLoginOpen(true)}
+        onOpenSignup={() => setIsSignupOpen(true)}
+      />
+      <Hero onSearch={handleSearch} />
+      <PropertyGrid 
+        searchQuery={searchQuery}
+        verifiedOnly={verifiedOnly}
+        onSelectProperty={handleSelectProperty}
+        onToggleVerified={handleToggleVerified}
+        onOpenMap={() => setIsMapOpen(true)}
+        onResetSearch={handleResetSearch}
+      />
+      <CTASection onNavigateToHub={handleNavigateToHub} />
+    </>
+  );
+
   return (
     <>
-      {page !== 'hub' && (
-        <Navbar 
-          currentPage={page} 
-          onNavigate={(p) => setPage(p)} 
-          onOpenLogin={() => setIsLoginOpen(true)}
-          onOpenSignup={() => setIsSignupOpen(true)}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        
+        <Route 
+          path="/property/:id" 
+          element={
+            <PropertyDetails 
+              propertyId={selectedPropertyId} 
+              onBack={() => navigate('/')}
+              onOpenLogin={handleBookRequest}
+              onOpenMap={() => setIsMapOpen(true)}
+            />
+          } 
         />
-      )}
 
-      {page === 'home' && (
-        <>
-          <Hero onSearch={handleSearch} />
-          
-          <PropertyGrid 
-            searchQuery={searchQuery}
-            verifiedOnly={verifiedOnly}
-            onSelectProperty={handleSelectProperty}
-            onToggleVerified={handleToggleVerified}
-            onOpenMap={() => setIsMapOpen(true)}
-            onResetSearch={handleResetSearch}
-          />
-          
-          <CTASection onNavigateToHub={handleNavigateToHub} />
-        </>
-      )}
-
-      {page === 'details' && (
-        <PropertyDetails 
-          propertyId={selectedPropertyId} 
-          onBack={() => setPage('home')}
-          onOpenLogin={handleBookRequest}
-          onOpenMap={() => setIsMapOpen(true)}
+        <Route 
+          path="/landlord-hub" 
+          element={
+            user?.userType === 'landlord' ? (
+              <LandlordHub onBackToHome={() => navigate('/')} />
+            ) : (
+              <div style={{ padding: '40px', textAlign: 'center', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                <h2>Access Denied</h2>
+                <p>Only landlords can access this page.</p>
+                <button onClick={() => navigate('/')} className="form-btn" style={{ marginTop: '20px' }}>Back to Home</button>
+              </div>
+            )
+          } 
         />
-      )}
-
-      {page === 'hub' && user?.userType === 'landlord' && (
-        <LandlordHub onBackToHome={() => setPage('home')} />
-      )}
-
-      {page === 'hub' && (!user || user.userType !== 'landlord') && (
-        <div style={{ padding: '40px', textAlign: 'center', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-          <h2>Access Denied</h2>
-          <p>Only landlords can access this page.</p>
-          <button onClick={() => setPage('home')} className="form-btn" style={{ marginTop: '20px' }}>Back to Home</button>
-        </div>
-      )}
+      </Routes>
 
       <LoginModal 
         isOpen={isLoginOpen}
@@ -168,4 +178,3 @@ function App() {
 }
 
 export default App;
-
