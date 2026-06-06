@@ -3,10 +3,12 @@ import type { Property } from '../types';
 import { PropertyCard } from './PropertyCard';
 import { propertiesData } from '../data/properties';
 import { apiService } from '../services/api';
+import type { FilterState } from './FilterModal';
 
 interface PropertyGridProps {
   searchQuery: string;
   verifiedOnly: boolean;
+  filters?: FilterState;
   onSelectProperty: (id: string) => void;
   onToggleVerified: () => void;
   onOpenMap: () => void;
@@ -16,6 +18,7 @@ interface PropertyGridProps {
 export const PropertyGrid: React.FC<PropertyGridProps> = ({
   searchQuery,
   verifiedOnly,
+  filters,
   onSelectProperty,
   onToggleVerified,
   onOpenMap,
@@ -40,6 +43,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     const timer = setTimeout(() => {
       const query = searchQuery.trim().toLowerCase();
@@ -58,12 +62,42 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
         results = results.filter((p) => p.isVerified);
       }
 
+      if (filters) {
+        results = results.filter(p => p.price <= filters.maxPrice);
+
+        if (filters.category !== 'All') {
+          results = results.filter(p => p.badges && p.badges.includes(filters.category));
+        }
+        
+        if (filters.roomCapacity !== '') {
+          const cap = Number(filters.roomCapacity);
+          if (cap >= 4) {
+            results = results.filter(p => (p.roomCapacity || 1) >= 4);
+          } else {
+            results = results.filter(p => (p.roomCapacity || 1) === cap);
+          }
+        }
+        
+        if (filters.hasWiFi) {
+          results = results.filter(p => 
+            p.amenities?.some(a => a.toLowerCase().includes('wi-fi')) || 
+            p.features?.some(f => f.name.toLowerCase().includes('wi-fi') || f.name.toLowerCase().includes('wifi'))
+          );
+        }
+        
+        if (filters.curfewMode === 'no-curfew') {
+          results = results.filter(p => !p.hasCurfew);
+        } else if (filters.curfewMode === 'has-curfew') {
+          results = results.filter(p => p.hasCurfew);
+        }
+      }
+
       setFilteredProperties(results);
       setLoading(false);
     }, 500); // 500ms feel responsive yet premium
 
     return () => clearTimeout(timer);
-  }, [searchQuery, verifiedOnly, properties]);
+  }, [searchQuery, verifiedOnly, properties, filters]);
 
   return (
     <section className="properties" id="properties">
@@ -88,7 +122,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
               onClick={onOpenMap}
               style={{ padding: '8px 16px' }}
             >
-              📍 View Map
+               View Map
             </button>
           </div>
         </div>
@@ -100,7 +134,7 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
           </div>
         ) : filteredProperties.length === 0 ? (
           <div className="no-results active" id="no-results">
-            <div className="no-results-icon">🔍</div>
+            <div className="no-results-icon"></div>
             <h3>No boarding houses found</h3>
             <p>Try searching for a different barangay or area.</p>
             <button className="btn-reset" id="btn-reset" onClick={onResetSearch}>

@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'details' | 'hub') => void;
+  onNavigate: (page: 'home' | 'details' | 'hub' | 'resources' | 'messages') => void;
   onOpenLogin: () => void;
   onOpenSignup: () => void;
-  currentPage: 'home' | 'details' | 'hub';
+  currentPage: 'home' | 'details' | 'hub' | 'resources' | 'messages';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenSignup, currentPage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,7 +22,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLinkClick = (page: 'home' | 'details' | 'hub', sectionId?: string) => {
+  useEffect(() => {
+    if (user && token) {
+      let interval: any;
+      import('../services/api').then(({ apiService }) => {
+        const fetchUnread = () => {
+          apiService.getUnreadCount(token).then(data => {
+            setUnreadCount(data.unreadCount);
+          }).catch(console.error);
+        };
+        fetchUnread();
+        // Poll every 10 seconds for simplicity instead of putting socket in navbar
+        interval = setInterval(fetchUnread, 10000);
+      });
+      return () => { if (interval) clearInterval(interval); };
+    }
+  }, [user, token]);
+
+  const handleLinkClick = (page: 'home' | 'details' | 'hub' | 'resources' | 'messages', sectionId?: string) => {
     onNavigate(page);
     setIsMobileMenuOpen(false);
 
@@ -72,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
               Find a Stay
             </a>
           </li>
-          {user?.userType === 'landlord' && (
+          {(user?.userType === 'landlord' || user?.userType === 'student') && (
             <li>
               <a 
                 href="#" 
@@ -86,20 +104,63 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
               </a>
             </li>
           )}
+          {user?.userType === 'admin' && (
+            <li>
+              <a 
+                href="#" 
+                className={`nav-link ${currentPage === 'hub' ? 'active' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLinkClick('hub');
+                }}
+              >
+                Admin Hub
+              </a>
+            </li>
+          )}
           <li>
             <a 
               href="#" 
-              className="nav-link"
-              onClick={(e) => e.preventDefault()}
+              className={`nav-link ${currentPage === 'resources' ? 'active' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick('resources');
+              }}
             >
-              Resources <span style={{ fontSize: '0.7rem' }}>⌄</span>
+              Resources
             </a>
           </li>
           {user ? (
             <>
               <li>
+                <a 
+                  href="#" 
+                  className={`nav-link ${currentPage === 'messages' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick('messages');
+                  }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  Messages
+                  {unreadCount > 0 && (
+                    <span style={{
+                      backgroundColor: '#ef4444',
+                      color: 'white',
+                      fontSize: '0.7rem',
+                      fontWeight: 'bold',
+                      padding: '2px 6px',
+                      borderRadius: '10px',
+                      marginLeft: '4px'
+                    }}>
+                      {unreadCount}
+                    </span>
+                  )}
+                </a>
+              </li>
+              <li>
                 <div style={{ paddingLeft: '12px', paddingRight: '12px', color: '#666', fontSize: '14px' }}>
-                  👤 {user.fullName}
+                   {user.fullName}
                 </div>
               </li>
               <li>

@@ -30,6 +30,17 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
               {badge === 'Verified' ? '✓ Verified' : badge}
             </span>
           ))}
+          {property.availableBeds === 0 ? (
+            <span className="card-badge" style={{ background: 'rgba(254, 242, 242, 0.95)', color: '#b91c1c', border: '1px solid rgba(254, 202, 202, 0.6)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '3px 8px', backdropFilter: 'blur(4px)', fontWeight: 600, fontSize: '.65rem' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
+              Fully Occupied
+            </span>
+          ) : (
+            <span className="card-badge" style={{ background: 'rgba(240, 253, 244, 0.95)', color: '#15803d', border: '1px solid rgba(187, 247, 208, 0.6)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '3px 8px', backdropFilter: 'blur(4px)', fontWeight: 600, fontSize: '.65rem' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22c55e', boxShadow: '0 0 4px #22c55e' }}></span>
+              {property.availableBeds !== undefined ? property.availableBeds : (property.roomCapacity || 1)} of {property.roomCapacity || 1} Beds Available
+            </span>
+          )}
         </div>
       </div>
       <div className="card-body">
@@ -42,7 +53,9 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
           {property.location}
         </div>
         <h3 className="card-title">{property.title}</h3>
-        <p className="card-description">{property.description}</p>
+        <p className="card-description">
+          {property.description.split(/[-—]\s*Contact\s*[-—]/)[0].trim()}
+        </p>
         <div className="card-amenities">
           {property.amenities.map((amenity) => (
             <span key={amenity} className="amenity">{amenity}</span>

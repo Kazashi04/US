@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 interface HeroProps {
   onSearch: (query: string) => void;
+  onOpenFilter?: () => void;
 }
 
 interface Particle {
@@ -12,10 +13,12 @@ interface Particle {
   delay: number;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
+export const Hero: React.FC<HeroProps> = ({ onSearch, onOpenFilter }) => {
   const [searchValue, setSearchValue] = useState('');
 
-  const particles = useMemo<Particle[]>(() => {
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  React.useEffect(() => {
     const arr: Particle[] = [];
     for (let i = 0; i < 20; i++) {
       arr.push({
@@ -26,7 +29,8 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
         delay: Math.random() * 10,
       });
     }
-    return arr;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setParticles(arr);
   }, []);
 
   const handleSearchSubmit = () => {
@@ -71,7 +75,7 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
         ))}
       </div>
       <div className="hero-content">
-        <p className="hero-badge">🎓 Trusted by students across GenSan</p>
+        <p className="hero-badge"> Trusted by students across GenSan</p>
         <h1 className="hero-title">
           Find Your Perfect<br />
           <span className="hero-title-accent">Boarding House</span>
@@ -80,31 +84,43 @@ export const Hero: React.FC<HeroProps> = ({ onSearch }) => {
           Discover comfortable, affordable stays near universities in General Santos City.
         </p>
 
-        <div className="search-bar" id="search-bar">
-          <div className="search-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-              strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+        <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%', padding: '0 16px', boxSizing: 'border-box' }}>
+          <div className="search-bar" id="search-bar">
+            <div className="search-input-wrapper">
+              <div className="search-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                  strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <input 
+                type="text" 
+                id="search-input" 
+                className="search-input"
+                placeholder="Search by Area (e.g. Lagao)" 
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                autoComplete="off" 
+              />
+              <button 
+                className="filter-icon-btn"
+                onClick={onOpenFilter}
+                aria-label="Filters"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                <span className="filter-text">Filters</span>
+              </button>
+            </div>
+            <button 
+              className="search-btn" 
+              id="search-btn"
+              onClick={handleSearchSubmit}
+            >
+              Search
+            </button>
           </div>
-          <input 
-            type="text" 
-            id="search-input" 
-            className="search-input"
-            placeholder="Search by Area or Barangay (e.g. Lagao, Calumpang)" 
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            autoComplete="off" 
-          />
-          <button 
-            className="search-btn" 
-            id="search-btn"
-            onClick={handleSearchSubmit}
-          >
-            Search
-          </button>
         </div>
 
         <div className="hero-tags">

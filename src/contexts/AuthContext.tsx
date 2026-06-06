@@ -4,7 +4,14 @@ export interface User {
   id: string;
   fullName: string;
   email: string;
-  userType: 'student' | 'landlord';
+  userType: 'student' | 'landlord' | 'admin';
+  isVerified?: boolean;
+  verificationStatus?: 'pending' | 'approved' | 'rejected';
+  rejectionReason?: string;
+  documentUrl?: string;
+  profileImage?: string;
+  subscriptionTier?: 'none' | 'regular' | 'premium';
+  subscriptionExpiry?: string;
 }
 
 interface AuthContextType {
@@ -13,8 +20,9 @@ interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (fullName: string, email: string, password: string, confirmPassword: string, userType: 'student' | 'landlord', university?: string, phoneNumber?: string) => Promise<void>;
+  register: (fullName: string, email: string, password: string, confirmPassword: string, userType: 'student' | 'landlord', university?: string, phoneNumber?: string, document?: File, profileImage?: File) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (savedToken && savedUser) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setToken(savedToken);
         setUser(JSON.parse(savedUser));
       } catch (error) {
@@ -81,22 +90,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     confirmPassword: string,
     userType: 'student' | 'landlord',
     university?: string,
-    phoneNumber?: string
+    phoneNumber?: string,
+    document?: File,
+    profileImage?: File
   ) => {
     setLoading(true);
     try {
+      const formData = new FormData();
+      formData.append('fullName', fullName);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('confirmPassword', confirmPassword);
+      formData.append('userType', userType);
+      if (userType === 'student' && university) formData.append('university', university);
+      if (phoneNumber) formData.append('phoneNumber', phoneNumber);
+      if (document) formData.append('document', document);
+      if (profileImage) formData.append('profileImage', profileImage);
+
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fullName,
-          email,
-          password,
-          confirmPassword,
-          userType,
-          university: userType === 'student' ? university : null,
-          phoneNumber
-        })
+        body: formData
       });
 
       if (!response.ok) {
@@ -126,6 +139,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('user');
   };
 
+  const refreshUser = async () => {
+    if (!token) return;
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+    } catch (e) {
+      console.error('Error refreshing user:', e);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -135,7 +164,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated: !!user,
         login,
         register,
-        logout
+        logout,
+        refreshUser
       }}
     >
       {children}
@@ -143,6 +173,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

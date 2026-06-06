@@ -21,6 +21,15 @@ export const apiService = {
     return response.json();
   },
 
+  // Fetch user profile and properties
+  async getUserProfile(id: string) {
+    const response = await fetch(`${API_BASE_URL}/users/${id}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user profile.');
+    }
+    return response.json();
+  },
+
   // Upload stay listing with multiple images to Express/MongoDB (protected route)
   async createProperty(formData: FormData, token: string): Promise<Property> {
     const response = await fetch(`${API_BASE_URL}/properties`, {
@@ -88,6 +97,262 @@ export const apiService = {
     if (!response.ok) {
       throw new Error('Seeding database failed.');
     }
+    return response.json();
+  },
+
+  // Landlord: resubmit a rejected listing
+  async resubmitProperty(id: string, token: string): Promise<{ message: string; property: Property }> {
+    const response = await fetch(`${API_BASE_URL}/properties/${id}/resubmit`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to resubmit listing.');
+    }
+    return response.json();
+  },
+
+  // Admin: fetch listings (optionally filtered by status)
+  async getAdminListings(token: string, status?: 'pending' | 'approved' | 'rejected'): Promise<Property[]> {
+    const url = status
+      ? `${API_BASE_URL}/admin/listings?status=${status}`
+      : `${API_BASE_URL}/admin/listings`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch listings.');
+    return response.json();
+  },
+
+  // Admin: dashboard stats
+  async getAdminStats(token: string): Promise<{ pending: number; approved: number; rejected: number; total: number; landlords: number }> {
+    const response = await fetch(`${API_BASE_URL}/admin/stats`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch stats.');
+    return response.json();
+  },
+
+  // Admin: approve a listing
+  async approveListing(id: string, token: string): Promise<{ message: string; property: Property }> {
+    const response = await fetch(`${API_BASE_URL}/admin/listings/${id}/approve`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to approve.');
+    }
+    return response.json();
+  },
+
+  // Admin: reject a listing with reason
+  async rejectListing(id: string, reason: string, token: string): Promise<{ message: string; property: Property }> {
+    const response = await fetch(`${API_BASE_URL}/admin/listings/${id}/reject`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ reason })
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to reject.');
+    }
+    return response.json();
+  },
+
+  // Admin: fetch landlords
+  async getAdminLandlords(token: string, status?: 'pending' | 'approved' | 'rejected'): Promise<any[]> {
+    const url = status
+      ? `${API_BASE_URL}/admin/landlords?status=${status}`
+      : `${API_BASE_URL}/admin/landlords`;
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch landlords.');
+    return response.json();
+  },
+
+  // Admin: approve a landlord
+  async approveLandlord(id: string, token: string): Promise<{ message: string; user: any }> {
+    const response = await fetch(`${API_BASE_URL}/admin/landlords/${id}/approve`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to approve landlord.');
+    }
+    return response.json();
+  },
+
+  // Admin: reject a landlord
+  async rejectLandlord(id: string, reason: string, token: string): Promise<{ message: string; user: any }> {
+    const response = await fetch(`${API_BASE_URL}/admin/landlords/${id}/reject`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ reason })
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to reject landlord.');
+    }
+    return response.json();
+  },
+
+  // Admin: update landlord subscription
+  async updateLandlordSubscription(id: string, tier: 'none' | 'regular' | 'premium', token: string): Promise<{ message: string; user: any }> {
+    const response = await fetch(`${API_BASE_URL}/admin/landlords/${id}/subscription`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ tier })
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to update subscription.');
+    }
+    return response.json();
+  },
+
+  // Subscription Paymongo
+  async createSubscriptionCheckout(targetTier: 'regular' | 'premium', token: string): Promise<{ checkoutUrl: string }> {
+    const response = await fetch(`${API_BASE_URL}/subscriptions/checkout`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ targetTier })
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to create subscription checkout.');
+    }
+    return response.json();
+  },
+
+  async verifySubscriptionPayment(token: string): Promise<{ success: boolean; user?: any; status?: string }> {
+    const response = await fetch(`${API_BASE_URL}/subscriptions/verify-payment`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to verify payment.');
+    }
+    return response.json();
+  },
+
+  // Chat
+  async getUnreadCount(token: string): Promise<{ unreadCount: number }> {
+    const response = await fetch(`${API_BASE_URL}/messages/unread-count`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch unread count');
+    return response.json();
+  },
+
+  async getConversations(token: string): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/conversations`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch conversations');
+    return response.json();
+  },
+
+  async startConversation(propertyId: string, landlordId: string, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/conversations`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ propertyId, landlordId })
+    });
+    if (!response.ok) throw new Error('Failed to start conversation');
+    return response.json();
+  },
+
+  async getMessages(conversationId: string, token: string): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/conversations/${conversationId}/messages`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch messages');
+    return response.json();
+  },
+
+  async markMessagesAsRead(conversationId: string, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/conversations/${conversationId}/read`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to mark messages as read');
+    return response.json();
+  },
+
+  async createBookingCheckout(propertyId: string, landlordId: string, moveInDate: string, durationMonths: number, message: string, totalPrice: number, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/bookings/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ propertyId, landlordId, moveInDate, durationMonths, message, totalPrice })
+    });
+    if (!response.ok) throw new Error('Failed to create checkout link');
+    return response.json();
+  },
+
+  async verifyPayment(bookingId: string, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/verify-payment`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to verify payment');
+    return response.json();
+  },
+
+  async deleteBooking(bookingId: string, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to cancel reservation.');
+    }
+    return response.json();
+  },
+
+  async getMyBookings(token: string): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/bookings/my-bookings`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch bookings');
+    return response.json();
+  },
+
+  async getManageBookings(token: string): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/bookings/manage`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Failed to fetch reservations');
+    return response.json();
+  },
+
+  async updateBookingStatus(bookingId: string, status: string, token: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ status })
+    });
+    if (!response.ok) throw new Error('Failed to update booking status');
     return response.json();
   }
 };

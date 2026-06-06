@@ -5,10 +5,18 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
-  userType: { type: String, enum: ['student', 'landlord'], required: true },
+  userType: { type: String, enum: ['student', 'landlord', 'admin'], required: true },
   university: { type: String, default: null }, // For students
   phoneNumber: { type: String, default: null },
+  documentUrl: { type: String, default: null },
+  profileImage: { type: String, default: null },
   isVerified: { type: Boolean, default: false },
+  verificationStatus: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+  rejectionReason: { type: String, default: '' },
+  subscriptionTier: { type: String, enum: ['none', 'regular', 'premium'], default: 'none' },
+  subscriptionExpiry: { type: Date, default: null },
+  paymongoSubscriptionLinkId: { type: String, default: null },
+  paymongoSubscriptionTargetTier: { type: String, enum: ['regular', 'premium', null], default: null },
   createdAt: { type: Date, default: Date.now }
 });
 

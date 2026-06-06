@@ -46,7 +46,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
       <div className="modal" id="modal-box" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" id="modal-close" onClick={onClose}>&times;</button>
         <div className="modal-header">
-          <span className="modal-icon">🔐</span>
+          <span className="modal-icon"></span>
           <h2>Welcome Back</h2>
           <p>Sign in to your UniStay account</p>
         </div>
