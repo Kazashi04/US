@@ -120,10 +120,10 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
-    // Basic folder setting. You can add more formats if needed.
+    // Basic folder setting.
     return {
       folder: 'unistay_uploads',
-      format: 'webp', // optional: convert all images to webp
+      resource_type: 'auto', // Allow images and raw documents (PDF/DOCX)
       public_id: `stay-${Date.now()}-${Math.round(Math.random() * 1e9)}`,
     };
   },
