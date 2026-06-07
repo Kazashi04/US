@@ -9,7 +9,7 @@ import L from 'leaflet';
 import toast from 'react-hot-toast';
 
 // Fix for default Leaflet markers
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -87,6 +87,7 @@ interface FormState {
   description: string;
   amenities: string[];
   features: { name: string; description: string }[];
+  quickStats: { value: string; label: string }[];
   phone: string;
   messenger: string;
   latitude: string;
@@ -107,6 +108,7 @@ const emptyForm: FormState = {
   description: '',
   amenities: [],
   features: [],
+  quickStats: [],
   phone: '',
   messenger: '',
   latitude: '',
@@ -640,7 +642,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
                               await apiService.updateBookingStatus(res.id, 'approved', token);
                               setReservations(prev => prev.map(r => r.id === res.id ? { ...r, status: 'approved' } : r));
                               setSuccessMsg('Reservation approved!');
-                            } catch (err) { toast.error('Failed to approve'); }
+                            } catch { toast.error('Failed to update subscription.'); }
                           }}
                           style={{ padding: '10px 20px', background: COLORS.green600, color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}
                         >Approve</button>
@@ -650,7 +652,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
                               await apiService.updateBookingStatus(res.id, 'rejected', token);
                               setReservations(prev => prev.map(r => r.id === res.id ? { ...r, status: 'rejected' } : r));
                               setSuccessMsg('Reservation rejected.');
-                            } catch (err) { toast.error('Failed to reject'); }
+                            } catch { toast.error('Failed to update status.'); }
                           }}
                           style={{ padding: '10px 20px', background: COLORS.red50, color: COLORS.red700, border: 'none', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}
                         >Reject</button>
@@ -883,8 +885,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
       document.body.classList.remove('hide-chat-widget');
     };
   }, []);
-
-  const handleAddFeature = () => {
+          const handleAddFeature = () => {
     onFieldChange('features', [...(form.features || []), { name: '', description: '' }]);
   };
 
@@ -896,6 +897,23 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
 
   const handleRemoveFeature = (index: number) => {
     onFieldChange('features', (form.features || []).filter((_, i) => i !== index));
+  };
+
+  const handleAddQuickStat = () => {
+    if ((form.quickStats || []).length >= 4) return;
+    onFieldChange('quickStats', [...(form.quickStats || []), { value: '', label: '' }]);
+  };
+
+  const handleQuickStatChange = (index: number, key: 'value' | 'label', val: string) => {
+    const updated = [...(form.quickStats || [])];
+    updated[index] = { ...updated[index], [key]: val };
+    onFieldChange('quickStats', updated);
+  };
+
+  const handleRemoveQuickStat = (index: number) => {
+    const updated = [...(form.quickStats || [])];
+    updated.splice(index, 1);
+    onFieldChange('quickStats', updated);
   };
 
   const inputStyle = (hasError: boolean): React.CSSProperties => ({
@@ -1249,7 +1267,49 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
             </div>
           </Field>
 
-          {/* Contact */}
+          {/* Quick Stats */}
+          <Field label="Quick Highlights (Stats Strip)" help="Add up to 4 quick highlights to show in the premium stats strip (e.g. 5 Mins, Walking Distance).">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {form.quickStats?.map((stat, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                  <input
+                    type="text"
+                    value={stat.value}
+                    onChange={(e) => handleQuickStatChange(idx, 'value', e.target.value)}
+                    placeholder="Short Title (e.g. 5 Mins)"
+                    className="hub-input-animated"
+                    style={{ ...inputStyle(false), flex: '1', minWidth: '120px' }}
+                    maxLength={15}
+                  />
+                  <input
+                    type="text"
+                    value={stat.label}
+                    onChange={(e) => handleQuickStatChange(idx, 'label', e.target.value)}
+                    placeholder="Subtitle (e.g. Walking Distance)"
+                    className="hub-input-animated"
+                    style={{ ...inputStyle(false), flex: '2' }}
+                    maxLength={30}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveQuickStat(idx)}
+                    style={{ ...styles.dangerGhostBtn, padding: '12px 16px', marginTop: 0 }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+              {(form.quickStats?.length || 0) < 4 && (
+                <button
+                  type="button"
+                  onClick={handleAddQuickStat}
+                  style={{ ...styles.ghostBtn, alignSelf: 'flex-start', padding: '8px 16px', fontSize: '0.9rem' }}
+                >
+                  + Add Highlight
+                </button>
+              )}
+            </div>
+          </Field>
           <div style={styles.row2}>
             <Field
               label="Phone Number"

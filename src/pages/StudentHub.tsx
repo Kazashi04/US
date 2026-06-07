@@ -10,7 +10,7 @@ export const StudentHub: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [verifyingId, setVerifyingId] = useState<string | null>(null);
 
-  const fetchBookings = async () => {
+  const fetchBookings = React.useCallback(async () => {
     if (!token) return;
     try {
       setLoading(true);
@@ -21,11 +21,12 @@ export const StudentHub: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
-    fetchBookings();
-  }, [token]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchBookings();
+  }, [fetchBookings]);
 
   const handleVerifyPayment = async (bookingId: string) => {
     if (!token) return;
@@ -39,6 +40,7 @@ export const StudentHub: React.FC = () => {
         toast.error(`Payment status is currently: ${res.status}. If you just paid, please wait a moment and try again.`);
       }
     } catch (err) {
+      console.error(err);
       toast.error("Failed to verify payment.");
     } finally {
       setVerifyingId(null);
@@ -55,8 +57,8 @@ export const StudentHub: React.FC = () => {
         toast.success("Reservation cancelled successfully.");
         fetchBookings();
       }
-    } catch (err: any) {
-      toast.error(err.message || "Failed to cancel reservation.");
+    } catch (err) {
+      toast.error((err as Error).message || "Failed to cancel reservation.");
     }
   };
 

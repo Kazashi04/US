@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { Property } from '../types';
 import { apiService } from '../services/api';
 
 // Fix for default Leaflet markers
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -17,9 +17,18 @@ L.Icon.Default.mergeOptions({
 interface MapModalProps {
   isOpen: boolean;
   onClose: () => void;
+  focusedPropertyId?: string | null;
 }
 
-export const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose }) => {
+const MapUpdater = ({ center, zoom }: { center: [number, number], zoom: number }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, zoom);
+  }, [center, zoom, map]);
+  return null;
+};
+
+export const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose, focusedPropertyId }) => {
   const [properties, setProperties] = useState<Property[]>([]);
 
   useEffect(() => {
@@ -34,6 +43,12 @@ export const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose }) => {
 
   // General Santos City center
   const defaultCenter: [number, number] = [6.1164, 125.1716];
+  
+  const focusedProperty = properties.find(p => p.id === focusedPropertyId);
+  const center: [number, number] = focusedProperty?.latitude && focusedProperty?.longitude 
+    ? [focusedProperty.latitude, focusedProperty.longitude] 
+    : defaultCenter;
+  const zoom = focusedProperty ? 16 : 13;
 
   return (
     <div className="modal-overlay active" id="map-modal" onClick={(e) => {
@@ -42,11 +57,12 @@ export const MapModal: React.FC<MapModalProps> = ({ isOpen, onClose }) => {
       <div className="modal modal--wide" id="map-modal-box" onClick={(e) => e.stopPropagation()} style={{ height: '80vh', display: 'flex', flexDirection: 'column' }}>
         <button className="modal-close" id="map-modal-close" onClick={onClose}>&times;</button>
         <div className="modal-header" style={{ marginBottom: '10px' }}>
-          <h2>UniStay Interactive Map</h2>
-          <p>Explore boarding houses near GenSan universities</p>
+          <h2>{focusedProperty ? focusedProperty.title : 'UniStay Interactive Map'}</h2>
+          <p>{focusedProperty ? 'Property location view' : 'Explore boarding houses near GenSan universities'}</p>
         </div>
         <div style={{ flex: 1, width: '100%', borderRadius: '8px', overflow: 'hidden', position: 'relative', zIndex: 0 }}>
-          <MapContainer center={defaultCenter} zoom={13} style={{ height: '100%', width: '100%' }}>
+          <MapContainer center={center} zoom={zoom} style={{ height: '100%', width: '100%' }}>
+            <MapUpdater center={center} zoom={zoom} />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

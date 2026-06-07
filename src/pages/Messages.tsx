@@ -212,6 +212,7 @@ export const Messages: React.FC = () => {
     
     // Connect socket
     const newSocket = io(API_BASE_URL);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSocket(newSocket);
 
     // Fetch conversations

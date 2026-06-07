@@ -228,7 +228,7 @@ const CheckIcon = () => (
 
 export const Pricing: React.FC = () => {
   const navigate = useNavigate();
-  const { user, token, logout } = useAuth();
+  const { user, token } = useAuth();
   
   const [loadingTier, setLoadingTier] = useState<'regular' | 'premium' | null>(null);
   const [verifying, setVerifying] = useState(false);
@@ -275,9 +275,9 @@ export const Pricing: React.FC = () => {
       
       // Show verification modal
       setShowVerifyModal(true);
-    } catch (err: any) {
+    } catch (err) {
       if (newWindow) newWindow.close();
-      setError(err.message || 'Failed to create checkout session.');
+      setError((err as Error).message || 'Failed to create checkout session.');
     } finally {
       setLoadingTier(null);
     }
@@ -289,7 +289,7 @@ export const Pricing: React.FC = () => {
     setError('');
     
     try {
-      const { success, user: updatedUser, status } = await apiService.verifySubscriptionPayment(token);
+      const { success, status } = await apiService.verifySubscriptionPayment(token);
       if (success) {
         // We force a logout to refresh token and claims properly, or redirect to hub
         // Actually, redirecting to hub might just have stale Context unless we update Context.
@@ -298,8 +298,8 @@ export const Pricing: React.FC = () => {
       } else {
         setError(`Payment status is: ${status}. Please complete payment in the PayMongo tab.`);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to verify payment.');
+    } catch (err) {
+      setError((err as Error).message || 'Failed to verify payment.');
     } finally {
       setVerifying(false);
     }

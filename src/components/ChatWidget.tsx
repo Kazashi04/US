@@ -31,6 +31,7 @@ export const ChatWidget: React.FC = () => {
     if (!user || !token || !isOpen) return;
 
     const newSocket = io(API_BASE_URL);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSocket(newSocket);
 
     apiService.getConversations(token).then(data => {

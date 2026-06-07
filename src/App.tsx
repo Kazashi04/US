@@ -20,6 +20,7 @@ import { Pricing } from './pages/Pricing';
 import { FilterModal, defaultFilters } from './components/FilterModal';
 import type { FilterState } from './components/FilterModal';
 import { useAuth } from './contexts/AuthContext';
+import { Footer } from './components/Footer';
 
 function App() {
   const [selectedPropertyId, setSelectedPropertyId] = useState<string>('1');
@@ -147,6 +148,7 @@ function App() {
                 onResetSearch={handleResetSearch}
               />
               <CTASection onNavigateToHub={handleNavigateToHub} />
+              <Footer />
             </>
           } 
         />
@@ -292,7 +294,7 @@ function App() {
         onApplyFilters={setFilters}
       />
 
-      <MapModal isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} />
+      <MapModal isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} focusedPropertyId={selectedPropertyId} />
 
       {location.pathname !== '/messages' && location.pathname !== '/pricing' && <ChatWidget />}
 

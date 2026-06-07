@@ -23,7 +23,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
         )}
         <div className="card-badges">
           {property.isVerified && (
-            <span className="card-badge card-badge--verified" style={{ background: '#0d9488', color: 'white', display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'bold' }}>
+            <span className="card-badge card-badge--verified">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
               Verified
             </span>
@@ -36,15 +36,17 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
               {badge}
             </span>
           ))}
+        </div>
+        <div className="card-badges-bottom">
           {property.availableBeds === 0 ? (
-            <span className="card-badge" style={{ background: 'rgba(254, 242, 242, 0.95)', color: '#b91c1c', border: '1px solid rgba(254, 202, 202, 0.6)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '3px 8px', backdropFilter: 'blur(4px)', fontWeight: 600, fontSize: '.65rem' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
+            <span className="card-badge badge-full">
+              <span className="dot dot-red"></span>
               Fully Occupied
             </span>
           ) : (
-            <span className="card-badge" style={{ background: 'rgba(240, 253, 244, 0.95)', color: '#15803d', border: '1px solid rgba(187, 247, 208, 0.6)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '3px 8px', backdropFilter: 'blur(4px)', fontWeight: 600, fontSize: '.65rem' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22c55e', boxShadow: '0 0 4px #22c55e' }}></span>
-              {property.availableBeds !== undefined ? property.availableBeds : (property.roomCapacity || 1)} of {property.roomCapacity || 1} Beds Available
+            <span className="card-badge badge-available">
+              <span className="dot dot-green"></span>
+              {property.availableBeds !== undefined ? property.availableBeds : (property.roomCapacity || 1)} of {property.roomCapacity || 1} Beds
             </span>
           )}
         </div>

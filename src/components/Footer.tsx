@@ -1,92 +1,52 @@
 import React from 'react';
 
-interface FooterProps {
-  onNavigate: (page: 'home' | 'details' | 'hub') => void;
-  onSearchArea: (area: string) => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onNavigate, onSearchArea }) => {
-  const handleAreaClick = (e: React.MouseEvent, area: string) => {
-    e.preventDefault();
-    onNavigate('home');
-    onSearchArea(area);
-    setTimeout(() => {
-      const propGrid = document.getElementById('properties');
-      if (propGrid) propGrid.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
-
+export const Footer: React.FC = () => {
   return (
-    <footer className="footer" id="footer">
+    <footer className="footer">
       <div className="footer-container">
-        <div className="footer-brand">
-          <a 
-            href="#" 
-            className="footer-logo"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          >
-            <span className="logo-text">Uni<span className="logo-accent">Stay</span></span>
-          </a>
-          <p className="footer-description">
-            Helping students find safe, affordable, and comfortable boarding houses in General
-            Santos City since 2026.
+        <div className="footer-col brand-col">
+          <div className="footer-logo">
+            <img src="/logo.png" alt="UniStay Logo" style={{ width: '52px', height: '52px', objectFit: 'contain', transform: 'translateY(-2px)' }} />
+            <span className="logo-text" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f766e' }}>UniStay</span>
+          </div>
+          <p className="brand-desc">
+            Connecting students with premium boarding houses in General Santos City.
           </p>
         </div>
-        <div className="footer-links-group">
-          <h4>Explore</h4>
-          <a 
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('home');
-              setTimeout(() => {
-                const el = document.getElementById('properties');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
-            }}
-          >
-            Browse Listings
-          </a>
-          <a 
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('home');
-              setTimeout(() => {
-                const el = document.getElementById('list-property');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
-            }}
-          >
-            List a Property
-          </a>
-          <a href="#" onClick={(e) => e.preventDefault()}>About Us</a>
+        
+        <div className="footer-col">
+          <h4 className="footer-heading">COMPANY</h4>
+          <ul className="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
         </div>
-        <div className="footer-links-group">
-          <h4>Barangays</h4>
-          {['Lagao', 'Calumpang', 'Dadiangas', 'City Heights'].map((area) => (
-            <a 
-              key={area} 
-              href="#" 
-              onClick={(e) => handleAreaClick(e, area)}
-            >
-              {area}
+        
+        <div className="footer-col">
+          <h4 className="footer-heading">LEGAL</h4>
+          <ul className="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        
+        <div className="footer-col">
+          <h4 className="footer-heading">FOLLOW US</h4>
+          <div className="social-links">
+            <a href="#" className="social-link" style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0d9488' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
             </a>
-          ))}
-        </div>
-        <div className="footer-links-group">
-          <h4>Support</h4>
-          <a href="#" onClick={(e) => e.preventDefault()}>Help Center</a>
-          <a href="#" onClick={(e) => e.preventDefault()}>Contact Us</a>
-          <a href="#" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
+          </div>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2026 UniStay GenSan. All rights reserved.</p>
+        <p>© 2024 UniStay. Connecting students with premium boarding houses.</p>
       </div>
     </footer>
   );

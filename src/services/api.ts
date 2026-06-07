@@ -165,7 +165,7 @@ export const apiService = {
   },
 
   // Admin: fetch landlords
-  async getAdminLandlords(token: string, status?: 'pending' | 'approved' | 'rejected'): Promise<any[]> {
+  async getAdminLandlords(token: string, status?: 'pending' | 'approved' | 'rejected'): Promise<unknown[]> {
     const url = status
       ? `${API_BASE_URL}/admin/landlords?status=${status}`
       : `${API_BASE_URL}/admin/landlords`;
@@ -177,7 +177,7 @@ export const apiService = {
   },
 
   // Admin: approve a landlord
-  async approveLandlord(id: string, token: string): Promise<{ message: string; user: any }> {
+  async approveLandlord(id: string, token: string): Promise<{ message: string; user: unknown }> {
     const response = await fetch(`${API_BASE_URL}/admin/landlords/${id}/approve`, {
       method: 'PATCH',
       headers: { 'Authorization': `Bearer ${token}` }
@@ -190,7 +190,7 @@ export const apiService = {
   },
 
   // Admin: reject a landlord
-  async rejectLandlord(id: string, reason: string, token: string): Promise<{ message: string; user: any }> {
+  async rejectLandlord(id: string, reason: string, token: string): Promise<{ message: string; user: unknown }> {
     const response = await fetch(`${API_BASE_URL}/admin/landlords/${id}/reject`, {
       method: 'PATCH',
       headers: {
@@ -207,7 +207,7 @@ export const apiService = {
   },
 
   // Admin: update landlord subscription
-  async updateLandlordSubscription(id: string, tier: 'none' | 'regular' | 'premium', token: string): Promise<{ message: string; user: any }> {
+  async updateLandlordSubscription(id: string, tier: 'none' | 'regular' | 'premium', token: string): Promise<{ message: string; user: unknown }> {
     const response = await fetch(`${API_BASE_URL}/admin/landlords/${id}/subscription`, {
       method: 'PATCH',
       headers: {
@@ -240,7 +240,7 @@ export const apiService = {
     return response.json();
   },
 
-  async verifySubscriptionPayment(token: string): Promise<{ success: boolean; user?: any; status?: string }> {
+  async verifySubscriptionPayment(token: string): Promise<{ success: boolean; user?: unknown; status?: string }> {
     const response = await fetch(`${API_BASE_URL}/subscriptions/verify-payment`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` }
@@ -261,7 +261,7 @@ export const apiService = {
     return response.json();
   },
 
-  async getConversations(token: string): Promise<any[]> {
+  async getConversations(token: string): Promise<unknown[]> {
     const response = await fetch(`${API_BASE_URL}/conversations`, {
       headers: { 'Authorization': `Bearer ${token}` },
       cache: 'no-store'
@@ -270,7 +270,7 @@ export const apiService = {
     return response.json();
   },
 
-  async startConversation(propertyId: string, landlordId: string, token: string): Promise<any> {
+  async startConversation(propertyId: string, landlordId: string, token: string): Promise<unknown> {
     const response = await fetch(`${API_BASE_URL}/conversations`, {
       method: 'POST',
       headers: {
@@ -283,7 +283,7 @@ export const apiService = {
     return response.json();
   },
 
-  async getMessages(conversationId: string, token: string): Promise<any[]> {
+  async getMessages(conversationId: string, token: string): Promise<unknown[]> {
     const response = await fetch(`${API_BASE_URL}/conversations/${conversationId}/messages`, {
       headers: { 'Authorization': `Bearer ${token}` },
       cache: 'no-store'
@@ -292,7 +292,7 @@ export const apiService = {
     return response.json();
   },
 
-  async markMessagesAsRead(conversationId: string, token: string): Promise<any> {
+  async markMessagesAsRead(conversationId: string, token: string): Promise<unknown> {
     const response = await fetch(`${API_BASE_URL}/conversations/${conversationId}/read`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${token}` }
@@ -301,7 +301,7 @@ export const apiService = {
     return response.json();
   },
 
-  async createBookingCheckout(propertyId: string, landlordId: string, moveInDate: string, durationMonths: number, message: string, totalPrice: number, token: string): Promise<any> {
+  async createBookingCheckout(propertyId: string, landlordId: string, moveInDate: string, durationMonths: number, message: string, totalPrice: number, token: string): Promise<unknown> {
     const response = await fetch(`${API_BASE_URL}/bookings/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -311,7 +311,7 @@ export const apiService = {
     return response.json();
   },
 
-  async verifyPayment(bookingId: string, token: string): Promise<any> {
+  async verifyPayment(bookingId: string, token: string): Promise<unknown> {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/verify-payment`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` }
@@ -320,7 +320,7 @@ export const apiService = {
     return response.json();
   },
 
-  async deleteBooking(bookingId: string, token: string): Promise<any> {
+  async deleteBooking(bookingId: string, token: string): Promise<unknown> {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
@@ -332,7 +332,7 @@ export const apiService = {
     return response.json();
   },
 
-  async getMyBookings(token: string): Promise<any[]> {
+  async getMyBookings(token: string): Promise<unknown[]> {
     const response = await fetch(`${API_BASE_URL}/bookings/my-bookings`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -340,7 +340,7 @@ export const apiService = {
     return response.json();
   },
 
-  async getManageBookings(token: string): Promise<any[]> {
+  async getManageBookings(token: string): Promise<unknown[]> {
     const response = await fetch(`${API_BASE_URL}/bookings/manage`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -348,7 +348,7 @@ export const apiService = {
     return response.json();
   },
 
-  async updateBookingStatus(bookingId: string, status: string, token: string): Promise<any> {
+  async updateBookingStatus(bookingId: string, status: string, token: string): Promise<unknown> {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/status`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },

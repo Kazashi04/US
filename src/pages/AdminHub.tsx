@@ -149,7 +149,7 @@ export const AdminHub: React.FC<AdminHubProps> = ({ onBackToHome }) => {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [selected, closePanel]);
+  }, [selected, selectedLandlord, closePanel]);
 
   const refreshAfterAction = async (updated: Property) => {
     // Reload counters
@@ -230,7 +230,7 @@ export const AdminHub: React.FC<AdminHubProps> = ({ onBackToHome }) => {
     try {
       const landlordId = l.id || l._id;
       const { user } = await apiService.approveLandlord(landlordId, token);
-      setToast({ kind: 'success', msg: `Approved landlord "${user.fullName}"` });
+      setToast({ kind: 'success', msg: `Approved landlord "${(user as any).fullName}"` });
       await refreshLandlordAfterAction(user);
     } catch (err) {
       setToast({ kind: 'error', msg: err instanceof Error ? err.message : 'Could not approve' });
@@ -249,7 +249,7 @@ export const AdminHub: React.FC<AdminHubProps> = ({ onBackToHome }) => {
     try {
       const landlordId = l.id || l._id;
       const { user } = await apiService.rejectLandlord(landlordId, rejectionDraft.trim(), token);
-      setToast({ kind: 'success', msg: `Rejected landlord "${user.fullName}"` });
+      setToast({ kind: 'success', msg: `Rejected landlord "${(user as any).fullName}"` });
       setShowRejectField(false);
       setRejectionDraft('');
       await refreshLandlordAfterAction(user);
@@ -266,7 +266,7 @@ export const AdminHub: React.FC<AdminHubProps> = ({ onBackToHome }) => {
     try {
       const landlordId = l.id || l._id;
       const { user } = await apiService.updateLandlordSubscription(landlordId, tier, token);
-      setToast({ kind: 'success', msg: `Updated subscription for "${user.fullName}" to ${tier.toUpperCase()}` });
+      setToast({ kind: 'success', msg: `Updated subscription for "${(user as any).fullName}" to ${tier.toUpperCase()}` });
       await refreshLandlordAfterAction(user);
     } catch (err) {
       setToast({ kind: 'error', msg: err instanceof Error ? err.message : 'Could not update subscription' });
@@ -408,7 +408,7 @@ export const AdminHub: React.FC<AdminHubProps> = ({ onBackToHome }) => {
             try {
               setActionBusy(true);
               const conv = await apiService.startConversation(selected.id, landlordId, token!);
-              navigate('/messages', { state: { conversationId: conv.id } });
+              navigate('/messages', { state: { conversationId: (conv as any).id } });
             } catch (err: any) {
               setToast({ kind: 'error', msg: err.message || 'Failed to start conversation' });
             } finally {
@@ -778,7 +778,7 @@ const ListingPanel: React.FC<{
 }> = ({ property, busy, showRejectField, rejectionDraft, onSetRejectionDraft, onShowReject, onCancelReject, onApprove, onReject, onClose, onViewProfile, onMessageLandlord }) => {
   const status = getStatus(property);
   const meta = statusMeta[status];
-  const landlord = getLandlord(property);
+  const landlord = getLandlord(property) as any;
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {

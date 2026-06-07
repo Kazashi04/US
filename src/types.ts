@@ -8,6 +8,7 @@ export interface Property {
   period: string;
   amenities: string[];
   features?: { name: string; description: string }[];
+  quickStats?: { value: string; label: string }[];
   hasCurfew?: boolean;
   roomCapacity?: number;
   availableBeds?: number;
@@ -31,9 +32,9 @@ export interface ChatMessage {
 
 export interface Booking {
   id: string;
-  propertyId: any;
-  studentId: any;
-  landlordId: any;
+  propertyId: unknown;
+  studentId: unknown;
+  landlordId: unknown;
   status: 'payment_pending' | 'pending_landlord_approval' | 'approved' | 'rejected' | 'cancelled';
   moveInDate: string;
   durationMonths: number;
