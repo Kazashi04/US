@@ -1857,3 +1857,9 @@ img { max-width: 100%; display: block; }
 .react-datepicker__day:hover {
   background-color: var(--teal-100) !important;
 }
+
+/* Hide chat widget when a modal is active */
+.hide-chat-widget #chat-launcher,
+.hide-chat-widget .chat-widget {
+  display: none !important;
+}
