@@ -28,12 +28,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
               Verified
             </span>
           )}
-          {property.badges.map((badge) => (
+          {property.badges.filter(badge => badge !== 'Verified').map((badge) => (
             <span 
               key={badge} 
-              className={`card-badge ${badge === 'Verified' ? 'card-badge--verified' : badge === 'New' ? 'card-badge--new' : 'card-badge--top'}`}
+              className={`card-badge ${badge === 'New' ? 'card-badge--new' : 'card-badge--top'}`}
             >
-              {badge === 'Verified' ? '✓ Verified' : badge}
+              {badge}
             </span>
           ))}
           {property.availableBeds === 0 ? (

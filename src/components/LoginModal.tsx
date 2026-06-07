@@ -60,24 +60,24 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
         <form className="modal-form" id="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="login-email">Email Address</label>
-            <input 
-              type="email" 
-              id="login-email" 
-              placeholder="you@example.com" 
+            <input
+              type="email"
+              id="login-email"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required 
+              required
             />
           </div>
           <div className="form-group">
             <label htmlFor="login-password">Password</label>
-            <input 
-              type="password" 
-              id="login-password" 
-              placeholder="••••••••" 
+            <input
+              type="password"
+              id="login-password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required 
+              required
             />
           </div>
           <button type="submit" className="form-btn" id="form-submit-btn" disabled={isLoading}>

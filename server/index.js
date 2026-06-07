@@ -401,9 +401,8 @@ app.post('/api/properties', authenticateToken, upload.array('images', 8), async 
     const parsedBadges = typeof badges === 'string' ? JSON.parse(badges) : (badges || []);
     
     const isPremium = user.subscriptionTier === 'premium';
-    if (isPremium && !parsedBadges.includes('Verified')) {
-      parsedBadges.push('Verified');
-    }
+    // Remove 'Verified' from badges — verification is admin-only per-property
+    const cleanBadges = parsedBadges.filter(b => b !== 'Verified');
 
     // Map uploaded file path references to HTTP URLs
     // Cloudinary automatically provides the URL in `file.path`
@@ -422,14 +421,14 @@ app.post('/api/properties', authenticateToken, upload.array('images', 8), async 
       description,
       amenities: parsedAmenities || [],
       features: parsedFeatures || [],
-      badges: parsedBadges,
+      badges: cleanBadges,
       hasCurfew: hasCurfew === 'true' || hasCurfew === true,
       roomCapacity: cap,
       availableBeds: availableBeds !== undefined ? Number(availableBeds) : cap,
       isHidden: false,
       isBoosted: isPremium,
-      isVerified: isPremium,
-      verificationStatus: isPremium ? 'approved' : 'pending',
+      isVerified: false,
+      verificationStatus: 'pending',
       rejectionReason: '',
       latitude: latitude ? Number(latitude) : null,
       longitude: longitude ? Number(longitude) : null,
@@ -822,8 +821,9 @@ app.patch('/api/admin/landlords/:id/subscription', authenticateAdmin, async (req
 
     if (tier === 'none') {
       landlord.subscriptionExpiry = null;
+      // Hide all properties and remove boost; verification stays per-property (admin-only)
       await Property.updateMany({ landlordId: landlord._id }, { 
-        isHidden: true, isBoosted: false, isVerified: false, $pull: { badges: 'Verified' } 
+        isHidden: true, isBoosted: false
       });
     } else {
       const expiry = new Date();
@@ -831,12 +831,14 @@ app.patch('/api/admin/landlords/:id/subscription', authenticateAdmin, async (req
       landlord.subscriptionExpiry = expiry;
 
       if (tier === 'regular') {
+        // Show properties, no boost; verification stays per-property (admin-only)
         await Property.updateMany({ landlordId: landlord._id }, { 
-          isHidden: false, isBoosted: false, isVerified: false, $pull: { badges: 'Verified' } 
+          isHidden: false, isBoosted: false
         });
       } else if (tier === 'premium') {
+        // Show + boost properties; verification stays per-property (admin-only)
         await Property.updateMany({ landlordId: landlord._id }, { 
-          isHidden: false, isBoosted: true, isVerified: true, $addToSet: { badges: 'Verified' } 
+          isHidden: false, isBoosted: true
         });
       }
     }
@@ -1017,14 +1019,14 @@ app.post('/api/subscriptions/verify-payment', authenticateToken, async (req, res
       user.paymongoSubscriptionLinkId = null;
       user.paymongoSubscriptionTargetTier = null;
       
-      // Update property visibility/boost
+      // Update property visibility/boost only; verification stays per-property (admin-only)
       if (tier === 'regular') {
         await Property.updateMany({ landlordId: user._id }, { 
-          isHidden: false, isBoosted: false, isVerified: false, $pull: { badges: 'Verified' } 
+          isHidden: false, isBoosted: false
         });
       } else if (tier === 'premium') {
         await Property.updateMany({ landlordId: user._id }, { 
-          isHidden: false, isBoosted: true, isVerified: true, $addToSet: { badges: 'Verified' } 
+          isHidden: false, isBoosted: true
         });
       }
 
