@@ -360,7 +360,8 @@ app.get('/api/properties', async (req, res) => {
 // 2. Get single stay details
 app.get('/api/properties/:id', async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.id)
+      .populate('landlordId', 'fullName profileImage isVerified');
     if (!property) {
       return res.status(404).json({ error: 'Stay not found.' });
     }

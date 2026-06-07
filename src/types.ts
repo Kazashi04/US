@@ -18,7 +18,7 @@ export interface Property {
   latitude?: number;
   longitude?: number;
   images?: string[];
-  landlordId?: string | { id?: string; fullName?: string; email?: string; phoneNumber?: string } | null;
+  landlordId?: string | { id?: string; fullName?: string; email?: string; phoneNumber?: string; profileImage?: string; isVerified?: boolean } | null;
   createdAt?: string;
 }
 

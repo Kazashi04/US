@@ -22,6 +22,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
           </div>
         )}
         <div className="card-badges">
+          {property.isVerified && (
+            <span className="card-badge card-badge--verified" style={{ background: '#0d9488', color: 'white', display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 'bold' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          )}
           {property.badges.map((badge) => (
             <span 
               key={badge} 
