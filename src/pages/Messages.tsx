@@ -274,7 +274,7 @@ export const Messages: React.FC = () => {
     
     socket.emit('send_message', {
       conversationId: activeConv.id,
-      senderId: user.id || user._id,
+      senderId: user.id || (user as any)._id,
       text: inputText
     });
     
