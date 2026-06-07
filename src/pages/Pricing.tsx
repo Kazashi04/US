@@ -14,7 +14,9 @@ const COLORS = {
   gray800: '#1f2937',
   gray900: '#111827',
   green600: '#16a34a',
-  red600: '#dc2626'
+  red600: '#dc2626',
+  blue50: '#eff6ff',
+  blue600: '#2563eb'
 };
 
 const styles: Record<string, React.CSSProperties> = {
