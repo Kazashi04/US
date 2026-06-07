@@ -1086,6 +1086,7 @@ img { max-width: 100%; display: block; }
   bottom: 24px;
   right: 24px;
   width: 350px;
+  max-width: calc(100vw - 48px);
   height: 480px;
   background: var(--white);
   border-radius: 20px;
