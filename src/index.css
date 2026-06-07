@@ -1,11 +1,10 @@
-
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --teal-50: #f0fdfa; --teal-100: #ccfbf1; --teal-200: #99f6e4;
-  --teal-300: #5eead4; --teal-400: #2dd4bf; --teal-500: #14b8a6;
-  --teal-600: #0d9488; --teal-700: #0f766e; --teal-800: #115e59;
-  --teal-900: #134e4a;
+  --teal-50: #f5f7fc; --teal-100: #e8ecf8; --teal-200: #cfd8ef;
+  --teal-300: #aabcea; --teal-400: #809ee3; --teal-500: #597ed4;
+  --teal-600: #2c529e; --teal-700: #244485; --teal-800: #1e386e;
+  --teal-900: #182e5b;
   --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
   --gray-300: #d1d5db; --gray-400: #9ca3af; --gray-500: #6b7280;
   --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937;
