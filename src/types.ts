@@ -39,5 +39,6 @@ export interface Booking {
   durationMonths: number;
   message: string;
   totalPrice: number;
+  checkoutUrl?: string;
   createdAt: string;
 }

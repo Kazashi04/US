@@ -104,16 +104,16 @@ export const StudentHub: React.FC = () => {
       ) : (
         <div style={{ display: 'grid', gap: '20px' }}>
           {bookings.map(booking => (
-            <div key={booking.id} style={{ display: 'flex', background: 'white', border: '1px solid var(--gray-200)', borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-              <div style={{ width: 160, background: 'var(--gray-100)', flexShrink: 0 }}>
+            <div key={booking.id} style={{ display: 'flex', flexWrap: 'wrap', background: 'white', border: '1px solid var(--gray-200)', borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+              <div style={{ flex: '1 1 200px', minWidth: 200, maxWidth: '100%', background: 'var(--gray-100)' }}>
                 {booking.propertyId?.images?.[0] ? (
-                  <img src={booking.propertyId.images[0]} alt="Property" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={booking.propertyId.images[0]} alt="Property" style={{ width: '100%', height: '100%', minHeight: 200, objectFit: 'cover' }} />
                 ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gray-400)' }}>No Image</div>
+                  <div style={{ width: '100%', height: '100%', minHeight: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gray-400)' }}>No Image</div>
                 )}
               </div>
-              <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+              <div style={{ padding: '20px', flex: '2 1 300px', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                   <div>
                     <h3 style={{ margin: '0 0 4px 0', fontSize: '1.2rem', color: 'var(--gray-900)' }}>{booking.propertyId?.title || 'Unknown Property'}</h3>
                     <p style={{ margin: 0, color: 'var(--gray-500)', fontSize: '0.9rem' }}>{booking.propertyId?.location || ''}</p>
@@ -123,7 +123,7 @@ export const StudentHub: React.FC = () => {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '24px', marginBottom: 16, fontSize: '0.9rem' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', marginBottom: 16, fontSize: '0.9rem' }}>
                   <div>
                     <span style={{ color: 'var(--gray-500)', display: 'block', marginBottom: 2 }}>Move-in Date</span>
                     <strong style={{ color: 'var(--gray-800)' }}>{new Date(booking.moveInDate).toLocaleDateString()}</strong>
@@ -134,7 +134,7 @@ export const StudentHub: React.FC = () => {
                   </div>
                   <div>
                     <span style={{ color: 'var(--gray-500)', display: 'block', marginBottom: 2 }}>Reservation Fee</span>
-                    <strong style={{ color: 'var(--gray-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <strong style={{ color: 'var(--gray-800)', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
                       ₱{booking.totalPrice.toLocaleString()}
                       {booking.status !== 'payment_pending' && (
                         <span style={{ display: 'inline-flex', alignItems: 'center', background: '#dcfce7', color: '#166534', padding: '2px 6px', borderRadius: 12, fontSize: 10, fontWeight: 700 }}>

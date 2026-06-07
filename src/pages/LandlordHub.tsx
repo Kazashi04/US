@@ -38,6 +38,7 @@ const AMENITY_OPTIONS: { value: string; label: string; icon: string }[] = [
 const COLORS = {
   teal600: '#0d9488',
   teal700: '#0f766e',
+  teal800: '#115e59',
   teal50: '#f0fdfa',
   teal100: '#ccfbf1',
   gray50: '#f8fafc',
@@ -46,12 +47,15 @@ const COLORS = {
   gray300: '#cbd5e1',
   gray400: '#94a3b8',
   gray500: '#64748b',
+  gray600: '#475569',
   gray700: '#334155',
+  gray800: '#1e293b',
   gray900: '#0f172a',
   amber50: '#fffbeb',
   amber600: '#d97706',
   amber700: '#b45309',
   red50: '#fef2f2',
+  red200: '#fecaca',
   red600: '#dc2626',
   red700: '#b91c1c',
   green50: '#f0fdf4',
@@ -609,7 +613,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 {reservations.map(res => (
-                  <div key={res.id} style={{ display: 'flex', border: `1px solid ${COLORS.gray200}`, borderRadius: 12, padding: 20, background: '#fff' }}>
+                  <div key={res.id} style={{ display: 'flex', flexWrap: 'wrap', gap: 20, border: `1px solid ${COLORS.gray200}`, borderRadius: 12, padding: 20, background: '#fff' }}>
                     <div style={{ flex: 1 }}>
                       <h3 style={{ margin: '0 0 8px 0' }}>{res.propertyId?.title}</h3>
                       <p style={{ margin: '0 0 4px 0', color: COLORS.gray600 }}><strong>Student:</strong> {res.studentId?.fullName}</p>
