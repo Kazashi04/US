@@ -57,7 +57,7 @@ export const Resources: React.FC<ResourcesProps> = ({ onBackToHome }) => {
                 transition: 'var(--transition)'
               }}
             >
-               For Students
+               For Guests
             </button>
             <button
               onClick={() => setActiveTab('landlords')}
@@ -76,7 +76,7 @@ export const Resources: React.FC<ResourcesProps> = ({ onBackToHome }) => {
         <div className="info-grid">
           {activeTab === 'students' ? (
             <div className="features-area" style={{ gridColumn: '1 / -1', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
-              <h2 className="section-label">Student Success Guide</h2>
+              <h2 className="section-label">Guest Success Guide</h2>
               
               <div style={{ marginBottom: '32px', background: 'var(--white)', padding: '32px', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-md)', border: '1px solid var(--gray-100)', transition: 'transform 0.2s ease, box-shadow 0.2s ease' }} onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = 'var(--shadow-lg)'; }} onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
@@ -112,23 +112,23 @@ export const Resources: React.FC<ResourcesProps> = ({ onBackToHome }) => {
                   </div>
                   <div style={{ background: 'var(--gray-50)', padding: '16px', borderRadius: '8px' }}>
                     <strong style={{ color: 'var(--teal-700)', fontSize: '1.05rem', display: 'block', marginBottom: '6px' }}>Fatima/Uhaw</strong>
-                    <p style={{ margin: 0, color: 'var(--gray-600)' }}>The best spot if you attend Mindanao State University (MSU). It's generally quieter but has everything a student needs.</p>
+                    <p style={{ margin: 0, color: 'var(--gray-600)' }}>The best spot if you attend Mindanao State University (MSU). It's generally quieter but has everything a guest needs.</p>
                   </div>
                   <div style={{ background: 'var(--gray-50)', padding: '16px', borderRadius: '8px' }}>
                     <strong style={{ color: 'var(--teal-700)', fontSize: '1.05rem', display: 'block', marginBottom: '6px' }}>City Heights</strong>
-                    <p style={{ margin: 0, color: 'var(--gray-600)' }}>Central, peaceful, and accessible to malls like SM and Robinsons. Good for students who want a balance of city life and quiet study time.</p>
+                    <p style={{ margin: 0, color: 'var(--gray-600)' }}>Central, peaceful, and accessible to malls like SM and Robinsons. Good for visitors who want a balance of city life and quiet time.</p>
                   </div>
                 </div>
               </div>
 
-              <h2 className="section-label" style={{ marginTop: '48px' }}>Common Questions (Students)</h2>
+              <h2 className="section-label" style={{ marginTop: '48px' }}>Common Questions (Guests)</h2>
               <div className="accordion">
                 <div className={`accordion-item ${activeAccordion === 's1' ? 'active' : ''}`}>
                   <button className="accordion-header" onClick={() => toggleAccordion('s1')}>
                     <span>Is it free to use UniStay?</span>
                   </button>
                   <div className="accordion-content">
-                    <p>Yes! UniStay is 100% free for students searching for boarding houses.</p>
+                    <p>Yes! UniStay is 100% free for guests searching for boarding houses.</p>
                   </div>
                 </div>
                 <div className={`accordion-item ${activeAccordion === 's2' ? 'active' : ''}`}>

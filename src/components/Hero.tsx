@@ -75,13 +75,10 @@ export const Hero: React.FC<HeroProps> = ({ onSearch, onOpenFilter }) => {
         ))}
       </div>
       <div className="hero-content">
-        <p className="hero-badge"> Trusted by students across GenSan</p>
-        <h1 className="hero-title">
-          Find Your Perfect<br />
-          <span className="hero-title-accent">Boarding House</span>
-        </h1>
+        <p className="hero-badge">Trusted by locals and visitors across GenSan</p>
+        <h1 className="hero-title">Find Your Perfect <br /> <span className="hero-title-accent">GenSan</span> Stay</h1>
         <p className="hero-subtitle">
-          Discover comfortable, affordable stays near universities in General Santos City.
+          Discover comfortable, affordable, and premium stays across General Santos City.
         </p>
 
         <div style={{ maxWidth: '700px', margin: '0 auto', width: '100%', padding: '0 16px', boxSizing: 'border-box' }}>

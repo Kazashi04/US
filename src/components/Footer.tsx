@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
             <span className="logo-text" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f766e' }}>UniStay</span>
           </div>
           <p className="brand-desc">
-            Connecting students with premium boarding houses in General Santos City.
+            Connecting guests and renters with premium boarding houses in General Santos City.
           </p>
         </div>
         
@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2024 UniStay. Connecting students with premium boarding houses.</p>
+        <p>© 2024 UniStay. Connecting guests with premium boarding houses.</p>
       </div>
     </footer>
   );

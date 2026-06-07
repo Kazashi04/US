@@ -173,13 +173,13 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
 
           <div className="social-proof-stack">
             <div className="avatar-stack">
-              <img src="https://i.pravatar.cc/100?img=1" alt="student" />
-              <img src="https://i.pravatar.cc/100?img=5" alt="student" />
-              <img src="https://i.pravatar.cc/100?img=9" alt="student" />
+              <img src="https://i.pravatar.cc/100?img=1" alt="guest" />
+              <img src="https://i.pravatar.cc/100?img=5" alt="guest" />
+              <img src="https://i.pravatar.cc/100?img=9" alt="guest" />
               <div className="more-count">+15</div>
             </div>
             <div className="social-proof-text">
-              <strong>30+ students</strong> viewed this property today
+              <strong>30+ guests</strong> viewed this property today
             </div>
           </div>
         </div>

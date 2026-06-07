@@ -312,7 +312,7 @@ export const Pricing: React.FC = () => {
           Upgrade for more access to <span style={styles.titleHighlight}>UniStay</span>
         </h1>
         <p style={styles.subtitle}>
-          Cancel at any time. By subscribing, you agree to the UniStay Terms of Service. Reach more students and boost your rentals.
+          Cancel at any time. By subscribing, you agree to the UniStay Terms of Service. Reach more guests and boost your rentals.
         </p>
       </header>
 
@@ -324,7 +324,7 @@ export const Pricing: React.FC = () => {
           onMouseLeave={(e) => Object.assign(e.currentTarget.style, { transform: 'translateY(0)', boxShadow: styles.card.boxShadow })}
         >
           <div style={styles.tierName}>UniStay Regular</div>
-          <div style={styles.tierDesc}>Start hosting students with the essential tools for property management.</div>
+          <div style={styles.tierDesc}>Start hosting guests with the essential tools for property management.</div>
           
           <div style={styles.priceWrap}>
             <div style={styles.price}>₱300</div>
@@ -384,7 +384,7 @@ export const Pricing: React.FC = () => {
               <CheckIcon />
               <div>
                 <strong>Verified Badge</strong><br/>
-                Build extreme trust with students via an exclusive verification badge.
+                Build extreme trust with guests via an exclusive verification badge.
               </div>
             </li>
             <li style={styles.featureItem}>

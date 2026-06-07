@@ -12,7 +12,7 @@ export const CTASection: React.FC<CTASectionProps> = ({ onNavigateToHub }) => {
           <p className="cta-eyebrow">For Property Owners</p>
           <h2 className="cta-title">Have a Boarding House?</h2>
           <p className="cta-subtitle">
-            List your property on UniStay and connect with thousands of students looking for a place
+            List your property on UniStay and connect with thousands of guests looking for a place
             to stay in General Santos City.
           </p>
           <button className="cta-btn" id="cta-list-btn" onClick={onNavigateToHub}>
@@ -22,7 +22,7 @@ export const CTASection: React.FC<CTASectionProps> = ({ onNavigateToHub }) => {
         <div className="cta-visual">
           <div className="cta-stat-card">
             <span className="cta-stat-number">1,200+</span>
-            <span className="cta-stat-label">Students Searching</span>
+            <span className="cta-stat-label">Guests Searching</span>
           </div>
           <div className="cta-stat-card">
             <span className="cta-stat-number">85+</span>

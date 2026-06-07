@@ -8,8 +8,8 @@ interface PropertyCardProps {
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }) => {
   return (
-    <article className="property-card">
-      <div className="card-image" style={{ overflow: 'hidden' }}>
+    <article className="property-card" onClick={() => onSelect(property.id)}>
+      <div className="card-image">
         {property.images && property.images.length > 0 ? (
           <img 
             src={property.images[0]} 
@@ -38,17 +38,10 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
           ))}
         </div>
         <div className="card-badges-bottom">
-          {property.availableBeds === 0 ? (
-            <span className="card-badge badge-full">
-              <span className="dot dot-red"></span>
-              Fully Occupied
-            </span>
-          ) : (
-            <span className="card-badge badge-available">
-              <span className="dot dot-green"></span>
-              {property.availableBeds !== undefined ? property.availableBeds : (property.roomCapacity || 1)} of {property.roomCapacity || 1} Beds
-            </span>
-          )}
+          <span className="badge-capacity">
+            <span className={`dot ${property.availableBeds === 0 ? 'dot-red' : 'dot-orange'}`}></span>
+            {property.availableBeds !== undefined ? property.availableBeds : (property.roomCapacity || 1)} of {property.roomCapacity || 1} Beds
+          </span>
         </div>
       </div>
       <div className="card-body">
@@ -65,7 +58,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
           {property.description.split(/[-—]\s*Contact\s*[-—]/)[0].trim()}
         </p>
         <div className="card-amenities">
-          {property.amenities.map((amenity) => (
+          {property.amenities.slice(0, 3).map((amenity) => (
             <span key={amenity} className="amenity">{amenity}</span>
           ))}
         </div>
@@ -74,16 +67,15 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onSelect }
             <span className="price-amount">₱{property.price.toLocaleString()}</span>
             <span className="price-period">/{property.period}</span>
           </div>
-          <a 
-            href="#" 
+          <button 
             className="btn-details"
             onClick={(e) => {
-              e.preventDefault();
+              e.stopPropagation();
               onSelect(property.id);
             }}
           >
             View Details
-          </a>
+          </button>
         </div>
       </div>
     </article>

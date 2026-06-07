@@ -469,7 +469,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
             <p style={styles.eyebrow}>Welcome back, Host!</p>
             <h1 style={styles.welcomeTitle}>Manage your GenSan listings</h1>
             <p style={styles.welcomeSub}>
-              Post a new boarding house, transient stay, or apartment - and reach students looking for a home near campus.
+              Post a new boarding house, transient stay, or apartment - and reach guests looking for a home in GenSan.
             </p>
           </div>
           <button onClick={() => openModal()} style={styles.primaryBtn} aria-label="Post a new property">
@@ -584,7 +584,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
               <div style={{ fontSize: 48 }}></div>
               <h3 style={{ margin: '12px 0 6px', color: COLORS.gray900 }}>No listings yet</h3>
               <p style={{ color: COLORS.gray500, marginBottom: 20, textAlign: 'center', maxWidth: 360 }}>
-                Get your first boarding house in front of students this week. It only takes a couple of minutes.
+                Get your first property in front of guests this week. It only takes a couple of minutes.
               </p>
               <button onClick={() => openModal()} style={styles.primaryBtn}>+ Post your first listing</button>
             </div>
@@ -618,7 +618,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
                   <div key={res.id} style={{ display: 'flex', flexWrap: 'wrap', gap: 20, border: `1px solid ${COLORS.gray200}`, borderRadius: 12, padding: 20, background: '#fff' }}>
                     <div style={{ flex: 1 }}>
                       <h3 style={{ margin: '0 0 8px 0' }}>{res.propertyId?.title}</h3>
-                      <p style={{ margin: '0 0 4px 0', color: COLORS.gray600 }}><strong>Student:</strong> {res.studentId?.fullName}</p>
+                      <p style={{ margin: '0 0 4px 0', color: COLORS.gray600 }}><strong>Guest:</strong> {res.studentId?.fullName}</p>
                       <p style={{ margin: '0 0 4px 0', color: COLORS.gray600 }}><strong>Move-in:</strong> {new Date(res.moveInDate).toLocaleDateString()}</p>
                       <p style={{ margin: '0 0 4px 0', color: COLORS.gray600 }}><strong>Duration:</strong> {res.durationMonths} {res.durationMonths === 1 ? 'Month' : 'Months'}</p>
                       <p style={{ margin: '0 0 16px 0', color: COLORS.gray600, display: 'flex', alignItems: 'center', gap: 8 }}>
