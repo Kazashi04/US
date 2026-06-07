@@ -35,27 +35,43 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pro
       setLoading(true);
       setError('');
       
+      // Open a new tab immediately to bypass mobile pop-up blockers
+      const newWindow = window.open('about:blank', '_blank');
+      if (newWindow) {
+        newWindow.document.write('<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#333;">Redirecting to PayMongo...</div>');
+      }
+
       const formattedDate = moveInDate ? moveInDate.toISOString().split('T')[0] : '';
       const landlordIdStr = typeof property.landlordId === 'object' && property.landlordId !== null
         ? (property.landlordId as any).id || (property.landlordId as any)._id || ''
         : property.landlordId || '';
-      const response = await apiService.createBookingCheckout(
-        property.id,
-        landlordIdStr,
-        formattedDate,
-        durationMonths,
-        message,
-        reservationFee,
-        token
-      );
+        
+      try {
+        const response = await apiService.createBookingCheckout(
+          property.id,
+          landlordIdStr,
+          formattedDate,
+          durationMonths,
+          message,
+          reservationFee,
+          token
+        );
 
-      // Redirect to Paymongo Checkout in new tab to preserve UniStay
-      window.open(response.checkoutUrl, '_blank');
-      
-      // Close the modal and redirect to Student Hub
-      onClose();
-      navigate('/student-hub');
-
+        // Update the opened tab's URL
+        if (newWindow) {
+          newWindow.location.href = response.checkoutUrl;
+        } else {
+          // Fallback if pop-up was completely blocked
+          window.location.href = response.checkoutUrl;
+        }
+        
+        // Close the modal and redirect to Student Hub
+        onClose();
+        navigate('/student-hub');
+      } catch (innerErr: any) {
+        if (newWindow) newWindow.close();
+        throw innerErr;
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to initiate booking. Please try again.');
       setLoading(false);

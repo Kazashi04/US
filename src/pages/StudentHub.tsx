@@ -165,7 +165,7 @@ export const StudentHub: React.FC = () => {
                         className="btn-paylink" 
                         onClick={() => {
                           if (booking.checkoutUrl) {
-                            window.open(booking.checkoutUrl, '_blank');
+                            window.location.href = booking.checkoutUrl;
                           } else {
                             toast.error("Checkout URL not found. Please contact support.");
                           }

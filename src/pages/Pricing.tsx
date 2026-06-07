@@ -254,15 +254,27 @@ export const Pricing: React.FC = () => {
     setLoadingTier(tier);
     setError('');
 
+    // Open a new tab immediately to bypass mobile pop-up blockers
+    const newWindow = window.open('about:blank', '_blank');
+    if (newWindow) {
+      newWindow.document.write('<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#333;">Redirecting to PayMongo...</div>');
+    }
+
     try {
       const { checkoutUrl } = await apiService.createSubscriptionCheckout(tier, token);
       
-      // Open PayMongo in a new tab
-      window.open(checkoutUrl, '_blank');
+      // Update the opened tab's URL
+      if (newWindow) {
+        newWindow.location.href = checkoutUrl;
+      } else {
+        // Fallback if pop-up was completely blocked
+        window.location.href = checkoutUrl;
+      }
       
       // Show verification modal
       setShowVerifyModal(true);
     } catch (err: any) {
+      if (newWindow) newWindow.close();
       setError(err.message || 'Failed to create checkout session.');
     } finally {
       setLoadingTier(null);
