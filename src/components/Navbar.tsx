@@ -66,6 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
             handleLinkClick('home');
           }}
         >
+          <img src="/logo.jpg" alt="UniStay Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
           <span className="logo-text">Uni<span className="logo-accent">Stay</span></span>
         </a>
 
