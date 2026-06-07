@@ -429,7 +429,7 @@ export const Pricing: React.FC = () => {
             <button 
               onClick={handleVerify}
               disabled={verifying}
-              style={{ ...styles.btn, ...styles.btnPrimary }}
+              style={{ ...styles.btn, ...styles.btnPrimary, marginBottom: 12 }}
             >
               {verifying ? 'Verifying...' : 'I have completed payment'}
             </button>
