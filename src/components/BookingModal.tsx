@@ -36,9 +36,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pro
       setError('');
       
       const formattedDate = moveInDate ? moveInDate.toISOString().split('T')[0] : '';
+      const landlordIdStr = typeof property.landlordId === 'object' && property.landlordId !== null
+        ? (property.landlordId as any).id || (property.landlordId as any)._id || ''
+        : property.landlordId || '';
       const response = await apiService.createBookingCheckout(
         property.id,
-        property.landlordId || '', // Assuming landlordId is exposed.
+        landlordIdStr,
         formattedDate,
         durationMonths,
         message,
@@ -61,7 +64,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pro
 
   return (
     <div className={`modal-overlay ${isOpen ? 'active' : ''}`}>
-      <div className="modal" style={{ maxWidth: 500, overflowY: 'auto' }}>
+      <div className="modal" style={{ maxWidth: 500, maxHeight: '90vh', overflowY: 'auto' }}>
         <button className="modal-close" onClick={onClose}>&times;</button>
         <h2 style={{ marginBottom: 16 }}>Request to Book</h2>
         <p style={{ color: 'var(--gray-500)', marginBottom: 24, fontSize: '0.9rem' }}>
@@ -131,16 +134,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, pro
           </div>
 
           <div className="receipt-box animate-slide-up" style={{ marginTop: 8, animationDelay: '0.4s', position: 'relative', zIndex: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-              <span style={{ color: 'var(--gray-600)', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 4 }}>
+              <span style={{ color: 'var(--gray-600)', display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.9rem' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 Monthly Rent
               </span>
-              <span style={{ fontWeight: 600 }}>₱{property.price.toLocaleString()}</span>
+              <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>₱{property.price.toLocaleString()}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px dashed var(--teal-200)', paddingTop: 12 }}>
-              <span style={{ fontWeight: 700, color: 'var(--gray-900)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--teal-600)' }}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed var(--teal-200)', paddingTop: 12, flexWrap: 'wrap', gap: 4 }}>
+              <span style={{ fontWeight: 700, color: 'var(--gray-900)', display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.9rem' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--teal-600)', flexShrink: 0 }}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                 Reservation Fee (15%)
               </span>
               <span style={{ fontWeight: 800, color: 'var(--teal-700)', fontSize: '1.1rem' }}>₱{reservationFee.toLocaleString()}</span>
