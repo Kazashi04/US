@@ -159,7 +159,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
                 </a>
               </li>
               <li>
-                <div style={{ paddingLeft: '12px', paddingRight: '12px', color: '#666', fontSize: '14px' }}>
+                <div style={{ paddingLeft: '12px', paddingRight: '12px', color: '#666', fontSize: '14px', textAlign: 'center' }}>
                    {user.fullName}
                 </div>
               </li>
