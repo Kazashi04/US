@@ -55,7 +55,17 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       });
   }, [activePropertyId]);
 
-
+  // Track View
+  useEffect(() => {
+    if (token && property && user) {
+      const viewedKey = `viewed_${property.id}`;
+      if (!sessionStorage.getItem(viewedKey)) {
+        apiService.trackPropertyView(property.id, token).then(() => {
+          sessionStorage.setItem(viewedKey, 'true');
+        }).catch(console.error);
+      }
+    }
+  }, [token, property, user]);
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -126,7 +136,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           </h1>
 
           <p className="property-hero-subtitle">
-            <strong style={{ color: 'var(--teal-700)' }}>{property.location}</strong> • Advanced housing intelligence. Real-time availability, spatial analytics, and seamless booking for the modern academic lifestyle.
+            <strong style={{ color: 'var(--teal-700)' }}>{property.location}</strong> • {property.description}
           </p>
 
           <div className="premium-action-bar">
@@ -171,17 +181,22 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             </button>
           </div>
 
-          <div className="social-proof-stack">
-            <div className="avatar-stack">
-              <img src="https://i.pravatar.cc/100?img=1" alt="guest" />
-              <img src="https://i.pravatar.cc/100?img=5" alt="guest" />
-              <img src="https://i.pravatar.cc/100?img=9" alt="guest" />
-              <div className="more-count">+15</div>
+          {property.viewers && property.viewers.length > 0 && (
+            <div className="social-proof-stack" style={{ marginTop: 24, paddingBottom: 24 }}>
+              <div className="avatar-stack">
+                {property.viewers.slice(0, 3).map((viewer, i) => (
+                  <img key={viewer._id || i} src={viewer.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(viewer.fullName || 'User')}&background=0D9488&color=fff`} alt="guest" />
+                ))}
+                {property.viewers.length > 3 && (
+                  <div className="more-count">+{property.viewers.length - 3}</div>
+                )}
+              </div>
+              <div className="social-proof-text">
+                <strong>{property.viewers.length} {property.viewers.length === 1 ? 'guest' : 'guests'}</strong> viewed this property
+              </div>
             </div>
-            <div className="social-proof-text">
-              <strong>30+ guests</strong> viewed this property today
-            </div>
-          </div>
+          )}
+
         </div>
 
         <div className="hero-right-column">

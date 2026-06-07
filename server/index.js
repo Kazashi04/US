@@ -383,13 +383,31 @@ app.get('/api/properties', async (req, res) => {
 app.get('/api/properties/:id', async (req, res) => {
   try {
     const property = await Property.findById(req.params.id)
-      .populate('landlordId', 'fullName profileImage isVerified subscriptionTier');
+      .populate('landlordId', 'fullName profileImage isVerified subscriptionTier')
+      .populate('viewers', 'fullName profileImage');
     if (!property) {
       return res.status(404).json({ error: 'Stay not found.' });
     }
     res.json(property);
   } catch (error) {
     res.status(500).json({ error: 'Server error fetching details.' });
+  }
+});
+
+// Track property view
+app.post('/api/properties/:id/view', authenticateToken, async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).json({ error: 'Property not found.' });
+    
+    // Add user to viewers array if not already present
+    await Property.findByIdAndUpdate(req.params.id, {
+      $addToSet: { viewers: req.user.userId }
+    });
+    
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Error tracking view' });
   }
 });
 

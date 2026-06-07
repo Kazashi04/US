@@ -23,6 +23,7 @@ const propertySchema = new mongoose.Schema({
   images: { type: [String], default: [] },
   latitude: { type: Number, default: null },
   longitude: { type: Number, default: null },
+  viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   isHidden: { type: Boolean, default: true }, // Default hidden until subscription active
   isBoosted: { type: Boolean, default: false },
   landlordId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

@@ -19,6 +19,7 @@ export interface Property {
   latitude?: number;
   longitude?: number;
   images?: string[];
+  viewers?: { _id: string; fullName?: string; profileImage?: string }[];
   landlordId?: string | { id?: string; fullName?: string; email?: string; phoneNumber?: string; profileImage?: string; isVerified?: boolean; subscriptionTier?: string } | null;
   createdAt?: string;
 }
@@ -32,9 +33,9 @@ export interface ChatMessage {
 
 export interface Booking {
   id: string;
-  propertyId: unknown;
-  studentId: unknown;
-  landlordId: unknown;
+  propertyId: any;
+  studentId: any;
+  landlordId: any;
   status: 'payment_pending' | 'pending_landlord_approval' | 'approved' | 'rejected' | 'cancelled';
   moveInDate: string;
   durationMonths: number;

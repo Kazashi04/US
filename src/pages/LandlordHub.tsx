@@ -229,7 +229,8 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
         messenger: extractedMessenger,
         latitude: property.latitude ? String(property.latitude) : '',
         longitude: property.longitude ? String(property.longitude) : '',
-        images: [] 
+        images: [],
+        quickStats: property.quickStats || []
       });
     } else {
       setEditingPropertyId(null);

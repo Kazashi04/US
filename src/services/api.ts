@@ -1,4 +1,4 @@
-import type { Property } from '../types';
+import type { Property, Booking } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -26,6 +26,19 @@ export const apiService = {
     const response = await fetch(`${API_BASE_URL}/users/${id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch user profile.');
+    }
+    return response.json();
+  },
+
+  trackPropertyView: async (id: string, token: string): Promise<{ success: boolean }> => {
+    const response = await fetch(`${API_BASE_URL}/properties/${id}/view`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to track view');
     }
     return response.json();
   },
@@ -332,7 +345,7 @@ export const apiService = {
     return response.json();
   },
 
-  async getMyBookings(token: string): Promise<unknown[]> {
+  async getMyBookings(token: string): Promise<Booking[]> {
     const response = await fetch(`${API_BASE_URL}/bookings/my-bookings`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -340,7 +353,7 @@ export const apiService = {
     return response.json();
   },
 
-  async getManageBookings(token: string): Promise<unknown[]> {
+  async getManageBookings(token: string): Promise<Booking[]> {
     const response = await fetch(`${API_BASE_URL}/bookings/manage`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
