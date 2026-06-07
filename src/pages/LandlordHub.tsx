@@ -79,8 +79,8 @@ interface FormState {
   category: Category;
   price: string;
   period: Period;
-  roomCapacity: number;
-  availableBeds: number;
+  roomCapacity: number | '';
+  availableBeds: number | '';
   hasCurfew: boolean;
   address: string;
   landmarks: string;
@@ -1009,7 +1009,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
                 type="number"
                 min={1}
                 value={form.roomCapacity}
-                onChange={(e) => onFieldChange('roomCapacity', Number(e.target.value))}
+                onChange={(e) => onFieldChange('roomCapacity', e.target.value === '' ? '' : Number(e.target.value))}
                 style={styles.input}
               />
             </Field>
@@ -1018,9 +1018,9 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
               <input
                 type="number"
                 min={0}
-                max={form.roomCapacity}
+                max={typeof form.roomCapacity === 'number' ? form.roomCapacity : undefined}
                 value={form.availableBeds}
-                onChange={(e) => onFieldChange('availableBeds', Number(e.target.value))}
+                onChange={(e) => onFieldChange('availableBeds', e.target.value === '' ? '' : Number(e.target.value))}
                 className="hub-input-animated"
                 style={styles.input}
               />
