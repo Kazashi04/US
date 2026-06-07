@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2024 UniStay. Connecting guests with premium boarding houses.</p>
+        <p>© 2026 UniStay. Connecting guests with premium boarding houses.</p>
       </div>
     </footer>
   );
