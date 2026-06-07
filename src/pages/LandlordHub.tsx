@@ -499,7 +499,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
               borderBottom: activeTab === 'reservations' ? `3px solid ${COLORS.teal600}` : '3px solid transparent'
             }}
           >
-            Reservations {reservations.filter(r => r.status === 'pending_landlord_approval').length > 0 && <span style={{ background: COLORS.red600, color: '#fff', padding: '2px 8px', borderRadius: 12, fontSize: 12, marginLeft: 8 }}>{reservations.filter(r => r.status === 'pending_landlord_approval').length}</span>}
+            Reservations {(reservations.filter(r => r.status === 'pending_landlord_approval' || r.status === 'payment_pending').length > 0) && <span style={{ background: COLORS.red600, color: '#fff', padding: '2px 8px', borderRadius: 12, fontSize: 12, marginLeft: 8 }}>{reservations.filter(r => r.status === 'pending_landlord_approval' || r.status === 'payment_pending').length}</span>}
           </button>
           <button 
             onClick={() => setActiveTab('subscription')}
