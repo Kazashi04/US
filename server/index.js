@@ -106,6 +106,20 @@ mongoose.connect(process.env.MONGODB_URI)
     } catch (err) {
       console.error('⚠️ Could not seed admin user:', err);
     }
+
+    // One-time data fix: sync isVerified with verificationStatus for all properties
+    // This corrects properties that were incorrectly auto-verified by premium subscriptions
+    try {
+      const fixResult = await Property.updateMany(
+        { verificationStatus: { $ne: 'approved' }, isVerified: true },
+        { isVerified: false, $pull: { badges: 'Verified' } }
+      );
+      if (fixResult.modifiedCount > 0) {
+        console.log(`🔧 Fixed ${fixResult.modifiedCount} property(ies) with incorrect verification status.`);
+      }
+    } catch (err) {
+      console.error('⚠️ Could not run verification data fix:', err);
+    }
   })
   .catch((err) => console.error('❌ MongoDB connection failure:', err));
 
