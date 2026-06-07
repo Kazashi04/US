@@ -186,12 +186,12 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               {property.availableBeds === 0 ? 'Fully Occupied - No beds available' : `${property.availableBeds} out of ${property.roomCapacity || 1} Beds Currently Available!`}
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div className="card-price" style={{ margin: 0 }}>
-              <span className="price-amount" style={{ fontSize: '1.8rem' }}>₱{property.price.toLocaleString()}</span>
-              <span className="price-period">/{property.period}</span>
-            </div>
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <div className="card-price" style={{ margin: 0 }}>
+                <span className="price-amount" style={{ fontSize: '1.8rem' }}>₱{property.price.toLocaleString()}</span>
+                <span className="price-period">/{property.period}</span>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <button 
                 className="btn-secondary" 
                 onClick={handleMessageLandlord}
