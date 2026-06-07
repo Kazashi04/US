@@ -383,7 +383,7 @@ app.get('/api/properties', async (req, res) => {
 app.get('/api/properties/:id', async (req, res) => {
   try {
     const property = await Property.findById(req.params.id)
-      .populate('landlordId', 'fullName profileImage isVerified');
+      .populate('landlordId', 'fullName profileImage isVerified subscriptionTier');
     if (!property) {
       return res.status(404).json({ error: 'Stay not found.' });
     }
@@ -474,7 +474,7 @@ app.post('/api/properties', authenticateToken, upload.array('images', 8), async 
 app.get('/api/conversations', authenticateToken, async (req, res) => {
   try {
     const conversations = await Conversation.find({ participants: req.user.userId })
-      .populate('participants', 'fullName email userType profileImage')
+      .populate('participants', 'fullName email userType profileImage subscriptionTier')
       .populate('propertyId', 'title location images price')
       .sort({ updatedAt: -1 });
     res.json(conversations);
@@ -511,7 +511,7 @@ app.post('/api/conversations', authenticateToken, async (req, res) => {
       participants: { $all: [studentId, landlordId] },
       propertyId: propertyId
     })
-    .populate('participants', 'fullName email userType profileImage')
+    .populate('participants', 'fullName email userType profileImage subscriptionTier')
     .populate('propertyId', 'title location images price');
 
     if (!conversation) {
@@ -523,7 +523,7 @@ app.post('/api/conversations', authenticateToken, async (req, res) => {
       
       // Populate newly created conversation
       conversation = await Conversation.findById(conversation._id)
-        .populate('participants', 'fullName email userType profileImage')
+        .populate('participants', 'fullName email userType profileImage subscriptionTier')
         .populate('propertyId', 'title location images price');
     }
 

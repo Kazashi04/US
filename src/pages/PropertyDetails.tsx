@@ -247,7 +247,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                   <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--gray-900)' }}>{property.landlordId.fullName}</h3>
-                  {property.landlordId.isVerified && (
+                  {property.landlordId.subscriptionTier === 'premium' && (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="#0ea5e9" stroke="#white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '2px' }}>
                       <polygon points="12 2 15.09 5.09 19.5 5.5 20.91 9.91 24 12 20.91 14.09 19.5 18.5 15.09 18.91 12 22 8.91 18.91 4.5 18.5 3.09 14.09 0 12 3.09 9.91 4.5 5.5 8.91 5.09 12 2"></polygon>
                       <polyline points="9 12 11 14 15 10" stroke="white" strokeWidth="3"></polyline>

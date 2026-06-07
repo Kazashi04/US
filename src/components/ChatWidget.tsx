@@ -145,7 +145,15 @@ export const ChatWidget: React.FC = () => {
               </span>
             )}
             <div>
-              <h4 className="chat-name">{otherUser ? otherUser.fullName : 'Messages'}</h4>
+              <h4 className="chat-name" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {otherUser ? otherUser.fullName : 'Messages'}
+                {otherUser?.subscriptionTier === 'premium' && (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#0ea5e9" stroke="#white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 15.09 5.09 19.5 5.5 20.91 9.91 24 12 20.91 14.09 19.5 18.5 15.09 18.91 12 22 8.91 18.91 4.5 18.5 3.09 14.09 0 12 3.09 9.91 4.5 5.5 8.91 5.09 12 2"></polygon>
+                    <polyline points="9 12 11 14 15 10" stroke="white" strokeWidth="3"></polyline>
+                  </svg>
+                )}
+              </h4>
               {otherUser && <span className="chat-status">Online</span>}
             </div>
           </div>

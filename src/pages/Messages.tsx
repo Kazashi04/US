@@ -317,7 +317,17 @@ export const Messages: React.FC = () => {
                 </div>
                 <div style={styles.convContent}>
                   <div style={styles.convHeader}>
-                    <span style={styles.convName}>{otherUser.fullName}</span>
+                    <span style={styles.convName}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        {otherUser.fullName}
+                        {otherUser.subscriptionTier === 'premium' && (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="#0ea5e9" stroke="#white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="12 2 15.09 5.09 19.5 5.5 20.91 9.91 24 12 20.91 14.09 19.5 18.5 15.09 18.91 12 22 8.91 18.91 4.5 18.5 3.09 14.09 0 12 3.09 9.91 4.5 5.5 8.91 5.09 12 2"></polygon>
+                            <polyline points="9 12 11 14 15 10" stroke="white" strokeWidth="3"></polyline>
+                          </svg>
+                        )}
+                      </span>
+                    </span>
                     <span style={styles.convTime}>{formatTime(conv.updatedAt)}</span>
                   </div>
                   <p style={{ ...styles.convPreview, color: isActive ? COLORS.gray700 : COLORS.gray500 }}>
@@ -342,8 +352,14 @@ export const Messages: React.FC = () => {
               )}
             </div>
             <div>
-              <h3 style={{ margin: 0, color: COLORS.gray900, fontSize: '1.1rem' }}>
+              <h3 style={{ margin: 0, color: COLORS.gray900, fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 {(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).fullName}
+                {(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).subscriptionTier === 'premium' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#0ea5e9" stroke="#white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 15.09 5.09 19.5 5.5 20.91 9.91 24 12 20.91 14.09 19.5 18.5 15.09 18.91 12 22 8.91 18.91 4.5 18.5 3.09 14.09 0 12 3.09 9.91 4.5 5.5 8.91 5.09 12 2"></polygon>
+                    <polyline points="9 12 11 14 15 10" stroke="white" strokeWidth="3"></polyline>
+                  </svg>
+                )}
               </h3>
               <p style={{ margin: 0, color: COLORS.teal600, fontSize: '0.85rem', fontWeight: 500 }}>
                 Regarding: {activeConv.propertyId?.title || 'Property'}
