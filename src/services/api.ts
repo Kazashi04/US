@@ -263,7 +263,8 @@ export const apiService = {
 
   async getConversations(token: string): Promise<any[]> {
     const response = await fetch(`${API_BASE_URL}/conversations`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'Authorization': `Bearer ${token}` },
+      cache: 'no-store'
     });
     if (!response.ok) throw new Error('Failed to fetch conversations');
     return response.json();
@@ -284,7 +285,8 @@ export const apiService = {
 
   async getMessages(conversationId: string, token: string): Promise<any[]> {
     const response = await fetch(`${API_BASE_URL}/conversations/${conversationId}/messages`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'Authorization': `Bearer ${token}` },
+      cache: 'no-store'
     });
     if (!response.ok) throw new Error('Failed to fetch messages');
     return response.json();
