@@ -299,23 +299,7 @@ export const AdminHub: React.FC<AdminHubProps> = ({ onBackToHome }) => {
 
   return (
     <div style={styles.page}>
-      {/* Topbar */}
-      <header style={styles.topbar}>
-        <div style={styles.topbarInner}>
-          <a href="#" onClick={(e) => { e.preventDefault(); onBackToHome(); }} style={styles.logoLink}>
-            <span style={styles.logoText}>Uni<span style={{ color: COLORS.teal600 }}>Stay</span></span>
-            <span style={styles.logoBadge}>Admin</span>
-          </a>
-          <div style={styles.topbarRight}>
-            <span style={styles.userChip}>
-              <span style={styles.avatar}>A</span>
-              <span style={{ fontWeight: 500 }}>{user.fullName}</span>
-            </span>
-            <button onClick={onBackToHome} style={styles.ghostBtn}>Back to site</button>
-            <button onClick={() => { logout(); onBackToHome(); }} style={styles.ghostBtn}>Sign out</button>
-          </div>
-        </div>
-      </header>
+
 
       {/* Tabs */}
       <nav style={styles.tabsBar}>
@@ -1201,7 +1185,8 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: '100vh',
     background: COLORS.gray50,
     fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-    color: COLORS.gray900
+    color: COLORS.gray900,
+    paddingTop: 100
   },
   topbar: {
     position: 'sticky', top: 0, zIndex: 50,

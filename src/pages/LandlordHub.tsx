@@ -442,27 +442,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
 
   return (
     <div style={styles.page}>
-      {/* Top bar */}
-      <header style={styles.topbar}>
-        <div style={styles.topbarInner}>
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); onBackToHome(); }}
-            style={styles.logoLink}
-          >
-            <img src="/logo.png" alt="UniStay Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
-            <span style={styles.logoText}>Uni<span style={{ color: COLORS.teal600 }}>Stay</span></span>
-            <span style={styles.logoBadge}>Landlord Hub</span>
-          </a>
-          <div style={styles.topbarRight}>
-            <span style={styles.userChip}>
-              <span style={styles.avatar}>{firstName.charAt(0).toUpperCase()}</span>
-              <span style={{ fontWeight: 500 }}>{user.fullName}</span>
-            </span>
-            <button onClick={onBackToHome} style={styles.ghostBtn}>Back to site</button>
-          </div>
-        </div>
-      </header>
+
 
       <main style={styles.main}>
         {/* Welcome + CTA */}
@@ -1407,7 +1387,8 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: '100vh',
     background: COLORS.gray50,
     fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-    color: COLORS.gray900
+    color: COLORS.gray900,
+    paddingTop: 100
   },
   topbar: {
     position: 'sticky',

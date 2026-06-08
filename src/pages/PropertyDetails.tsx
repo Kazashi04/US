@@ -112,7 +112,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
 
   return (
     <main className="details-container">
-      <div className="section-container" style={{ paddingTop: '24px', paddingBottom: '12px' }}>
+      <div className="section-container" style={{ paddingTop: '100px', paddingBottom: '12px' }}>
         <button 
           onClick={onBack}
           className="btn-back"

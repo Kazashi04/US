@@ -25,7 +25,7 @@ export const Resources: React.FC<ResourcesProps> = ({ onBackToHome }) => {
       <div className="saas-floater-2"></div>
       
       <main className="details-container" style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ paddingTop: '24px', paddingBottom: '24px' }}>
+        <div style={{ paddingTop: '100px', paddingBottom: '24px' }}>
           <button 
             onClick={onBackToHome}
             className="btn-back"

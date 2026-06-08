@@ -22,8 +22,8 @@ const COLORS = {
 const styles = {
   container: {
     display: 'flex',
-    marginTop: '72px',
-    height: 'calc(100vh - 72px)',
+    marginTop: '100px',
+    height: 'calc(100vh - 100px)',
     backgroundColor: '#fff',
     overflow: 'hidden'
   },

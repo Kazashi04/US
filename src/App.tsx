@@ -102,6 +102,16 @@ function App() {
     }
   };
 
+  const currentPage = location.pathname === '/' ? 'home' : 
+                      (location.pathname.includes('/hub') || location.pathname.includes('/admin')) ? 'hub' : 
+                      location.pathname.includes('/resources') ? 'resources' : 
+                      location.pathname.includes('/messages') ? 'messages' : 
+                      location.pathname.includes('/property') ? 'details' : 'home';
+
+  // Only hide navbar on PropertyDetails if needed, but user said "apply to all" so we show it everywhere
+  // except maybe we can hide it on pages that absolutely don't want it. For now, show everywhere.
+  const showNavbar = true;
+
   return (
     <div className="app">
       <Toaster 
@@ -121,23 +131,28 @@ function App() {
           },
         }}
       />
-      <Routes>
-        <Route 
-          path="/" 
-          element={
-            <>
-              <Navbar 
-                currentPage="home" 
-                onNavigate={(p) => {
-                  if (p === 'home') navigate('/');
-                  if (p === 'hub') handleNavigateToHub();
-                  if (p === 'resources') navigate('/resources');
-                  if (p === 'messages') navigate('/messages');
-                }}
-                onOpenLogin={() => setIsLoginOpen(true)}
-                onOpenSignup={() => setIsSignupOpen(true)}
-              />
-              <Hero onSearch={handleSearch} onOpenFilter={() => setIsFilterOpen(true)} />
+
+      {showNavbar && (
+        <Navbar 
+          currentPage={currentPage as any} 
+          onNavigate={(p) => {
+            if (p === 'home') navigate('/');
+            if (p === 'hub') handleNavigateToHub();
+            if (p === 'resources') navigate('/resources');
+            if (p === 'messages') navigate('/messages');
+          }}
+          onOpenLogin={() => setIsLoginOpen(true)}
+          onOpenSignup={() => setIsSignupOpen(true)}
+        />
+      )}
+
+      <div key={location.pathname} className="page-transition">
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <>
+                <Hero onSearch={handleSearch} onOpenFilter={() => setIsFilterOpen(true)} />
               <PropertyGrid 
                 searchQuery={searchQuery}
                 verifiedOnly={verifiedOnly}
@@ -201,17 +216,6 @@ function App() {
           path="/student-hub"
           element={
             <>
-              <Navbar 
-                currentPage="hub" 
-                onNavigate={(p) => {
-                  if (p === 'home') navigate('/');
-                  if (p === 'hub') handleNavigateToHub();
-                  if (p === 'resources') navigate('/resources');
-                  if (p === 'messages') navigate('/messages');
-                }}
-                onOpenLogin={() => setIsLoginOpen(true)}
-                onOpenSignup={() => setIsSignupOpen(true)}
-              />
               <StudentHub />
             </>
           }
@@ -226,17 +230,6 @@ function App() {
           path="/profile/:id"
           element={
             <>
-              <Navbar 
-                currentPage="" 
-                onNavigate={(p) => {
-                  if (p === 'home') navigate('/');
-                  if (p === 'hub') handleNavigateToHub();
-                  if (p === 'resources') navigate('/resources');
-                  if (p === 'messages') navigate('/messages');
-                }}
-                onOpenLogin={() => setIsLoginOpen(true)}
-                onOpenSignup={() => setIsSignupOpen(true)}
-              />
               <Profile />
             </>
           }
@@ -247,17 +240,6 @@ function App() {
           element={
             user ? (
               <>
-                <Navbar 
-                  currentPage="messages" 
-                  onNavigate={(p) => {
-                    if (p === 'home') navigate('/');
-                    if (p === 'hub') handleNavigateToHub();
-                    if (p === 'resources') navigate('/resources');
-                    if (p === 'messages') navigate('/messages');
-                  }}
-                  onOpenLogin={() => setIsLoginOpen(true)}
-                  onOpenSignup={() => setIsSignupOpen(true)}
-                />
                 <Messages />
               </>
             ) : (
@@ -270,6 +252,7 @@ function App() {
           }
         />
       </Routes>
+      </div>
 
       <LoginModal 
         isOpen={isLoginOpen}
