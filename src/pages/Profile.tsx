@@ -139,8 +139,8 @@ export const Profile: React.FC = () => {
           {properties.length > 0 ? (
             <div className="properties-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
               {properties.map(property => (
-                <div key={property.id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/property/${property.id}`)}>
-                  <PropertyCard property={property} />
+                <div key={property.id} style={{ cursor: 'pointer' }}>
+                  <PropertyCard property={property} onSelect={(id) => navigate(`/property/${id}`)} />
                 </div>
               ))}
             </div>

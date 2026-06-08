@@ -324,7 +324,7 @@ export const apiService = {
     return response.json();
   },
 
-  async verifyPayment(bookingId: string, token: string): Promise<unknown> {
+  async verifyPayment(bookingId: string, token: string): Promise<{ success: boolean; status?: string }> {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/verify-payment`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` }
@@ -333,7 +333,7 @@ export const apiService = {
     return response.json();
   },
 
-  async deleteBooking(bookingId: string, token: string): Promise<unknown> {
+  async deleteBooking(bookingId: string, token: string): Promise<{ success: boolean; message?: string }> {
     const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
