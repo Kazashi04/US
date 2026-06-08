@@ -169,7 +169,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
   }, [token]);
 
   useEffect(() => {
-    if (!token || activeTab !== 'reservations') return;
+    if (!token) return;
     let cancelled = false;
     const loadRes = async () => {
       try {
@@ -184,7 +184,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
     };
     loadRes();
     return () => { cancelled = true; };
-  }, [token, activeTab]);
+  }, [token]);
 
   const firstName = useMemo(() => (user.fullName?.split(' ')[0] || 'Host'), [user.fullName]);
 
