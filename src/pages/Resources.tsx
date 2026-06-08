@@ -66,7 +66,7 @@ export const Resources: React.FC<ResourcesProps> = ({ onBackToHome }) => {
 
         <div>
           {activeTab === 'students' ? (
-            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
               <div className="saas-grid">
                 
                 <div className="saas-card">
@@ -149,7 +149,7 @@ export const Resources: React.FC<ResourcesProps> = ({ onBackToHome }) => {
 
             </div>
           ) : (
-            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
               <div className="saas-grid">
                 
                 <div className="saas-card">

@@ -1428,7 +1428,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 700, fontSize: 13
   },
 
-  main: { maxWidth: 1200, margin: '0 auto', padding: '32px 20px 80px' },
+  main: { maxWidth: 1600, margin: '0 auto', padding: '32px 20px 80px' },
 
   welcomeRow: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',

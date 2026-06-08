@@ -89,7 +89,7 @@ export const Profile: React.FC = () => {
   const joinDate = new Date(profileUser.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '40px 20px' }}>
+    <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 20px' }}>
       
       {/* Profile Header */}
       <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-start', background: 'var(--white)', padding: '40px', borderRadius: '20px', boxShadow: 'var(--shadow-md)', marginBottom: '40px' }}>

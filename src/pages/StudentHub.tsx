@@ -87,7 +87,7 @@ export const StudentHub: React.FC = () => {
   };
 
   return (
-    <main style={{ padding: '100px 20px 40px', maxWidth: 1000, margin: '0 auto', minHeight: '80vh' }}>
+    <main style={{ padding: '100px 20px 40px', maxWidth: 1400, margin: '0 auto', minHeight: '80vh' }}>
       <h1 style={{ fontSize: '2rem', color: 'var(--gray-900)', marginBottom: '8px' }}>My Dashboard</h1>
       <p style={{ color: 'var(--gray-600)', marginBottom: '32px' }}>Welcome back, {user.fullName}. Here are your reservations.</p>
 

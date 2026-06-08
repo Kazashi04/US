@@ -1219,7 +1219,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   tabsBar: { background: '#fff', borderBottom: `1px solid ${COLORS.gray200}`, position: 'sticky', top: 64, zIndex: 40 },
-  tabsInner: { maxWidth: 1280, margin: '0 auto', padding: '0 20px', display: 'flex', gap: 4 },
+  tabsInner: { maxWidth: 1600, margin: '0 auto', padding: '0 20px', display: 'flex', gap: 4 },
   tabBtn: {
     background: 'none', border: 'none',
     padding: '14px 16px', fontSize: 14,
@@ -1232,7 +1232,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 999, padding: '2px 8px', fontSize: 12, fontWeight: 700
   },
 
-  main: { maxWidth: 1280, margin: '0 auto', padding: '28px 20px 80px' },
+  main: { maxWidth: 1600, margin: '0 auto', padding: '28px 20px 80px' },
 
   welcomeRow: {
     display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
