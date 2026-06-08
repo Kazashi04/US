@@ -450,6 +450,7 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
             onClick={(e) => { e.preventDefault(); onBackToHome(); }}
             style={styles.logoLink}
           >
+            <img src="/logo.png" alt="UniStay Logo" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
             <span style={styles.logoText}>Uni<span style={{ color: COLORS.teal600 }}>Stay</span></span>
             <span style={styles.logoBadge}>Landlord Hub</span>
           </a>
@@ -950,7 +951,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
               placeholder='e.g., "Cozy 2-BR Apartment near MSU GenSan"'
               className="hub-input-animated"
               style={inputStyle(!!errors.title)}
-              maxLength={120}
+              maxLength={60}
             />
           </Field>
 
@@ -1076,6 +1077,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
               placeholder="e.g., Purok Maharlika, Brgy. Labangal, General Santos City"
               className="hub-input-animated"
               style={inputStyle(!!errors.address)}
+              maxLength={100}
             />
           </Field>
 
@@ -1092,6 +1094,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
               placeholder='e.g., "Walking distance to Notre Dame of Dadiangas University, near KCC Mall"'
               className="hub-input-animated"
               style={inputStyle(!!errors.landmarks)}
+              maxLength={100}
             />
           </Field>
 
@@ -1195,7 +1198,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
               rows={5}
               className="hub-input-animated"
               style={{ ...inputStyle(!!errors.description), resize: 'vertical', fontFamily: 'inherit' }}
-              maxLength={2000}
+              maxLength={800}
             />
           </Field>
 
@@ -1324,6 +1327,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
                 placeholder="e.g., 0917 123 4567"
                 className="hub-input-animated"
                 style={inputStyle(!!errors.phone)}
+                maxLength={20}
               />
             </Field>
 
@@ -1338,6 +1342,7 @@ const PostPropertyModal: React.FC<PostModalProps> = ({
                 placeholder="e.g., https://m.me/yourpage"
                 className="hub-input-animated"
                 style={inputStyle(false)}
+                maxLength={100}
               />
             </Field>
           </div>
@@ -1406,15 +1411,15 @@ const styles: Record<string, React.CSSProperties> = {
   },
   topbar: {
     position: 'sticky',
-    top: 0,
+    top: 20,
+    maxWidth: 1200,
+    margin: '20px auto 32px',
     zIndex: 50,
     background: '#fff',
-    borderBottom: `1px solid ${COLORS.gray200}`,
-    boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+    borderRadius: 16,
+    boxShadow: '0 4px 24px rgba(0,0,0,0.08)'
   },
   topbarInner: {
-    maxWidth: 1200,
-    margin: '0 auto',
     padding: '14px 20px',
     display: 'flex',
     alignItems: 'center',
@@ -1445,15 +1450,18 @@ const styles: Record<string, React.CSSProperties> = {
   main: { maxWidth: 1200, margin: '0 auto', padding: '32px 20px 80px' },
 
   welcomeRow: {
-    display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
-    gap: 24, flexWrap: 'wrap', marginBottom: 28
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    gap: 24, flexWrap: 'wrap', marginBottom: 32,
+    background: 'linear-gradient(160deg, #134e4a 0%, #0f766e 40%, #14b8a6 100%)',
+    padding: '40px 32px', borderRadius: 24,
+    boxShadow: '0 12px 40px rgba(0,0,0,0.12)'
   },
   eyebrow: {
-    margin: 0, color: COLORS.teal700,
+    margin: 0, color: '#ccfbf1',
     fontSize: 13, fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase'
   },
-  welcomeTitle: { margin: '4px 0 8px', fontSize: 'clamp(1.7rem, 3.4vw, 2.2rem)', fontWeight: 800, color: COLORS.gray900 },
-  welcomeSub: { margin: 0, color: COLORS.gray500, maxWidth: 620, lineHeight: 1.55 },
+  welcomeTitle: { margin: '4px 0 8px', fontSize: 'clamp(1.7rem, 3.4vw, 2.2rem)', fontWeight: 800, color: '#fff' },
+  welcomeSub: { margin: 0, color: 'rgba(255,255,255,0.8)', maxWidth: 620, lineHeight: 1.55 },
 
   statsRow: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
