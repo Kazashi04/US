@@ -169,7 +169,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
                   }}
                   style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                 >
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'var(--teal-600)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: user.profileImage ? 'transparent' : 'var(--teal-600)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold', overflow: 'hidden' }}>
                     {user.profileImage ? <img src={user.profileImage} alt="" style={{width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover'}}/> : user.fullName.charAt(0).toUpperCase()}
                   </div>
                   {user.fullName}
