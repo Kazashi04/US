@@ -30,6 +30,23 @@ export const apiService = {
     return response.json();
   },
 
+  // Update current user profile
+  async updateProfile(data: FormData, token: string) {
+    const response = await fetch(`${API_BASE_URL}/users/me`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: data
+    });
+    
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || 'Failed to update profile.');
+    }
+    return response.json();
+  },
+
   trackPropertyView: async (id: string, token: string): Promise<{ success: boolean }> => {
     const response = await fetch(`${API_BASE_URL}/properties/${id}/view`, {
       method: 'POST',

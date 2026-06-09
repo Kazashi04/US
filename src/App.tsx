@@ -17,6 +17,7 @@ import { Resources } from './pages/Resources';
 import { Messages } from './pages/Messages';
 import { Profile } from './pages/Profile';
 import { Pricing } from './pages/Pricing';
+import { MyProfile } from './pages/MyProfile';
 import { FilterModal, defaultFilters } from './components/FilterModal';
 import type { FilterState } from './components/FilterModal';
 import { useAuth } from './contexts/AuthContext';
@@ -106,6 +107,7 @@ function App() {
                       (location.pathname.includes('/hub') || location.pathname.includes('/admin')) ? 'hub' : 
                       location.pathname.includes('/resources') ? 'resources' : 
                       location.pathname.includes('/messages') ? 'messages' : 
+                      location.pathname.includes('/my-profile') ? 'profile' : 
                       location.pathname.includes('/property') ? 'details' : 'home';
 
   // Only hide navbar on PropertyDetails if needed, but user said "apply to all" so we show it everywhere
@@ -140,6 +142,7 @@ function App() {
             if (p === 'hub') handleNavigateToHub();
             if (p === 'resources') navigate('/resources');
             if (p === 'messages') navigate('/messages');
+            if (p === 'profile') navigate('/my-profile');
           }}
           onOpenLogin={() => setIsLoginOpen(true)}
           onOpenSignup={() => setIsSignupOpen(true)}
@@ -233,6 +236,11 @@ function App() {
               <Profile />
             </>
           }
+        />
+
+        <Route
+          path="/my-profile"
+          element={<MyProfile />}
         />
 
         <Route

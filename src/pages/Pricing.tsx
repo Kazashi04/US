@@ -411,7 +411,7 @@ export const Pricing: React.FC = () => {
             <div style={{ fontWeight: 600, color: COLORS.gray800 }}>Error</div>
             <div style={{ fontSize: 14, color: COLORS.gray600 }}>{error}</div>
           </div>
-          <button onClick={() => setError('')} style={{ background: 'none', border: 'none', marginLeft: 'auto', cursor: 'pointer', fontSize: 18, color: COLORS.gray600 }}>A-</button>
+          <button onClick={() => setError('')} style={{ background: 'none', border: 'none', marginLeft: 'auto', cursor: 'pointer', fontSize: 18, color: COLORS.gray600 }}>&times;</button>
         </div>
       )}
 

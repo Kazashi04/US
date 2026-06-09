@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'details' | 'hub' | 'resources' | 'messages') => void;
+  onNavigate: (page: 'home' | 'details' | 'hub' | 'resources' | 'messages' | 'profile') => void;
   onOpenLogin: () => void;
   onOpenSignup: () => void;
-  currentPage: 'home' | 'details' | 'hub' | 'resources' | 'messages';
+  currentPage: 'home' | 'details' | 'hub' | 'resources' | 'messages' | 'profile';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenSignup, currentPage }) => {
@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
     }
   }, [user, token]);
 
-  const handleLinkClick = (page: 'home' | 'details' | 'hub' | 'resources' | 'messages', sectionId?: string) => {
+  const handleLinkClick = (page: 'home' | 'details' | 'hub' | 'resources' | 'messages' | 'profile', sectionId?: string) => {
     onNavigate(page);
     setIsMobileMenuOpen(false);
 
@@ -160,9 +160,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onOpenS
                 </a>
               </li>
               <li>
-                <div style={{ paddingLeft: '12px', paddingRight: '12px', color: '#666', fontSize: '14px', textAlign: 'center' }}>
-                   {user.fullName}
-                </div>
+                <a 
+                  href="#"
+                  className={`nav-link ${currentPage === 'profile' ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick('profile');
+                  }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'var(--teal-600)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold' }}>
+                    {user.profileImage ? <img src={user.profileImage} alt="" style={{width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover'}}/> : user.fullName.charAt(0).toUpperCase()}
+                  </div>
+                  {user.fullName}
+                </a>
               </li>
               <li>
                 <a 

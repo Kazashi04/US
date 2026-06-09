@@ -13,6 +13,8 @@ export interface User {
   profileImage?: string;
   subscriptionTier?: 'none' | 'regular' | 'premium';
   subscriptionExpiry?: string;
+  phoneNumber?: string;
+  university?: string;
 }
 
 interface AuthContextType {

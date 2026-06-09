@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000';
 
 const COLORS = {
+  teal50: '#f0fdfa',
   teal600: '#0d9488',
   teal700: '#0f766e',
   gray50: '#f8fafc',
@@ -22,26 +23,31 @@ const COLORS = {
 const styles = {
   container: {
     display: 'flex',
-    marginTop: '100px',
-    height: 'calc(100vh - 100px)',
+    maxWidth: '1400px',
+    margin: '100px auto 40px auto',
+    height: 'calc(100vh - 140px)',
     backgroundColor: '#fff',
-    overflow: 'hidden'
+    borderRadius: '24px',
+    boxShadow: 'var(--shadow-xl)',
+    overflow: 'hidden',
+    border: `1px solid ${COLORS.gray200}`
   },
   sidebar: {
-    width: '320px',
+    width: '350px',
     borderRight: `1px solid ${COLORS.gray200}`,
     display: 'flex',
     flexDirection: 'column' as const,
-    backgroundColor: COLORS.gray50
+    backgroundColor: '#fff',
+    zIndex: 10
   },
   sidebarHeader: {
-    padding: '20px',
-    borderBottom: `1px solid ${COLORS.gray200}`,
-    backgroundColor: '#fff'
+    padding: '24px',
+    borderBottom: `1px solid ${COLORS.gray100}`,
+    background: 'linear-gradient(to bottom, #fff, rgba(255,255,255,0.9))'
   },
   sidebarTitle: {
-    fontSize: '1.25rem',
-    fontWeight: 700,
+    fontSize: '1.4rem',
+    fontWeight: 800,
     color: COLORS.gray900,
     margin: 0
   },
@@ -54,51 +60,57 @@ const styles = {
   },
   convItem: {
     display: 'flex',
-    padding: '16px',
-    borderBottom: `1px solid ${COLORS.gray200}`,
+    padding: '16px 24px',
+    borderBottom: `1px solid ${COLORS.gray100}`,
     cursor: 'pointer',
-    transition: 'background-color 0.2s',
+    transition: 'all 0.2s ease',
+    borderLeft: '4px solid transparent'
   },
   convItemActive: {
-    backgroundColor: '#e6f4f1'
+    backgroundColor: COLORS.teal50,
+    borderLeft: `4px solid ${COLORS.teal600}`
   },
   avatar: {
-    width: '48px',
-    height: '48px',
+    width: '52px',
+    height: '52px',
     borderRadius: '50%',
-    backgroundColor: COLORS.teal600,
+    background: 'linear-gradient(135deg, var(--teal-500), var(--teal-700))',
     color: '#fff',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '1.25rem',
-    fontWeight: 600,
-    marginRight: '12px',
+    fontWeight: 700,
+    marginRight: '14px',
     flexShrink: 0,
     overflow: 'hidden',
-    border: '2px solid var(--teal-100)'
+    boxShadow: '0 4px 10px rgba(13, 148, 136, 0.2)'
   },
   convContent: {
     flex: 1,
-    minWidth: 0
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    justifyContent: 'center'
   },
   convHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    marginBottom: '4px'
+    marginBottom: '6px'
   },
   convName: {
-    fontWeight: 600,
+    fontWeight: 700,
     color: COLORS.gray900,
-    fontSize: '0.95rem',
+    fontSize: '1rem',
     whiteSpace: 'nowrap' as const,
     overflow: 'hidden',
     textOverflow: 'ellipsis'
   },
   convTime: {
     fontSize: '0.75rem',
-    color: COLORS.gray500
+    fontWeight: 600,
+    color: COLORS.gray400
   },
   convPreview: {
     fontSize: '0.85rem',
@@ -106,27 +118,31 @@ const styles = {
     whiteSpace: 'nowrap' as const,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    margin: 0
+    margin: 0,
+    lineHeight: 1.4
   },
   chatArea: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column' as const,
-    backgroundColor: '#fff'
+    backgroundColor: COLORS.gray50
   },
   chatHeader: {
-    padding: '20px',
+    padding: '20px 32px',
+    backgroundColor: '#fff',
     borderBottom: `1px solid ${COLORS.gray200}`,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.02)',
+    zIndex: 5
   },
   messageList: {
     flex: 1,
-    padding: '20px',
+    padding: '32px',
     overflowY: 'auto' as const,
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: '12px'
+    gap: '16px'
   },
   messageRow: {
     display: 'flex',
@@ -139,49 +155,61 @@ const styles = {
     justifyContent: 'flex-start'
   },
   messageBubbleMine: {
-    backgroundColor: COLORS.teal600,
+    background: 'linear-gradient(135deg, var(--teal-600), var(--teal-700))',
     color: '#fff',
-    padding: '10px 16px',
-    borderRadius: '16px',
+    padding: '12px 20px',
+    borderRadius: '20px',
     borderBottomRightRadius: '4px',
     maxWidth: '70%',
-    wordBreak: 'break-word' as const
+    wordBreak: 'break-word' as const,
+    boxShadow: '0 4px 12px rgba(13, 148, 136, 0.2)',
+    fontSize: '0.95rem',
+    lineHeight: 1.5
   },
   messageBubbleTheirs: {
-    backgroundColor: COLORS.gray100,
+    backgroundColor: '#fff',
     color: COLORS.gray900,
-    padding: '10px 16px',
-    borderRadius: '16px',
+    padding: '12px 20px',
+    borderRadius: '20px',
     borderBottomLeftRadius: '4px',
     maxWidth: '70%',
-    wordBreak: 'break-word' as const
+    wordBreak: 'break-word' as const,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+    border: `1px solid ${COLORS.gray100}`,
+    fontSize: '0.95rem',
+    lineHeight: 1.5
   },
   inputArea: {
-    padding: '20px',
+    padding: '24px 32px',
+    backgroundColor: '#fff',
     borderTop: `1px solid ${COLORS.gray200}`,
-    backgroundColor: '#fff'
+    zIndex: 5
   },
   inputForm: {
     display: 'flex',
-    gap: '12px'
+    gap: '16px'
   },
   input: {
     flex: 1,
-    padding: '12px 16px',
-    borderRadius: '24px',
+    padding: '16px 24px',
+    borderRadius: '999px',
     border: `1px solid ${COLORS.gray300}`,
+    backgroundColor: COLORS.gray50,
     outline: 'none',
-    fontSize: '0.95rem'
+    fontSize: '0.95rem',
+    transition: 'all 0.2s',
   },
   sendBtn: {
-    backgroundColor: COLORS.teal600,
+    background: 'linear-gradient(135deg, var(--teal-600), var(--teal-800))',
     color: '#fff',
     border: 'none',
-    borderRadius: '24px',
-    padding: '0 24px',
-    fontWeight: 600,
+    borderRadius: '999px',
+    padding: '0 32px',
+    fontWeight: 700,
+    fontSize: '0.95rem',
     cursor: 'pointer',
-    transition: 'background-color 0.2s'
+    transition: 'all 0.2s',
+    boxShadow: '0 4px 12px rgba(13, 148, 136, 0.2)'
   },
   emptyState: {
     flex: 1,

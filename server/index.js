@@ -366,6 +366,44 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
   }
 });
 
+// 4. Update current user profile
+app.put('/api/users/me', authenticateToken, upload.single('profileImage'), async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const { fullName, phoneNumber, university } = req.body;
+    
+    if (fullName) user.fullName = fullName;
+    if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
+    if (university !== undefined && user.userType === 'student') user.university = university;
+
+    if (req.file) {
+      user.profileImage = req.file.path;
+    }
+
+    await user.save();
+    
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        userType: user.userType,
+        profileImage: user.profileImage,
+        phoneNumber: user.phoneNumber,
+        university: user.university
+      }
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ error: 'Error updating profile' });
+  }
+});
+
 // REST API Endpoints - Properties
 
 
