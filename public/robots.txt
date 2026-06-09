@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://unistay-gensan.vercel.app/sitemap.xml
