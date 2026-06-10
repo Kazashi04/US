@@ -461,13 +461,14 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
         </section>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 24, borderBottom: `1px solid ${COLORS.gray200}`, marginBottom: 32 }}>
+        <div style={{ display: 'flex', gap: 24, borderBottom: `1px solid ${COLORS.gray200}`, marginBottom: 32, overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           <button 
             onClick={() => setActiveTab('listings')}
             style={{ 
               background: 'none', border: 'none', padding: '12px 4px', fontSize: 16, fontWeight: 600, cursor: 'pointer',
               color: activeTab === 'listings' ? COLORS.teal700 : COLORS.gray500,
-              borderBottom: activeTab === 'listings' ? `3px solid ${COLORS.teal600}` : '3px solid transparent'
+              borderBottom: activeTab === 'listings' ? `3px solid ${COLORS.teal600}` : '3px solid transparent',
+              whiteSpace: 'nowrap'
             }}
           >
             My Listings
@@ -477,7 +478,10 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
             style={{ 
               background: 'none', border: 'none', padding: '12px 4px', fontSize: 16, fontWeight: 600, cursor: 'pointer',
               color: activeTab === 'reservations' ? COLORS.teal700 : COLORS.gray500,
-              borderBottom: activeTab === 'reservations' ? `3px solid ${COLORS.teal600}` : '3px solid transparent'
+              borderBottom: activeTab === 'reservations' ? `3px solid ${COLORS.teal600}` : '3px solid transparent',
+              whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
             Reservations {(reservations.filter(r => r.status === 'pending_landlord_approval' || r.status === 'payment_pending').length > 0) && <span style={{ background: COLORS.red600, color: '#fff', padding: '2px 8px', borderRadius: 12, fontSize: 12, marginLeft: 8 }}>{reservations.filter(r => r.status === 'pending_landlord_approval' || r.status === 'payment_pending').length}</span>}
@@ -487,7 +491,8 @@ export const LandlordHub: React.FC<LandlordHubProps> = ({ onBackToHome }) => {
             style={{ 
               background: 'none', border: 'none', padding: '12px 4px', fontSize: 16, fontWeight: 600, cursor: 'pointer',
               color: activeTab === 'subscription' ? COLORS.teal700 : COLORS.gray500,
-              borderBottom: activeTab === 'subscription' ? `3px solid ${COLORS.teal600}` : '3px solid transparent'
+              borderBottom: activeTab === 'subscription' ? `3px solid ${COLORS.teal600}` : '3px solid transparent',
+              whiteSpace: 'nowrap'
             }}
           >
             Subscription
