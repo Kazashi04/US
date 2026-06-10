@@ -209,7 +209,9 @@ const styles = {
     fontSize: '0.95rem',
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: '0 4px 12px rgba(13, 148, 136, 0.2)'
+    boxShadow: '0 4px 12px rgba(13, 148, 136, 0.2)',
+    whiteSpace: 'nowrap' as const,
+    flexShrink: 0
   },
   emptyState: {
     flex: 1,
@@ -231,6 +233,13 @@ export const Messages: React.FC = () => {
   const [inputText, setInputText] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!user || !token) {
@@ -318,9 +327,23 @@ export const Messages: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      ...styles.container,
+      ...(isMobile ? {
+        margin: '80px 10px 20px 10px',
+        height: 'calc(100vh - 100px)',
+        borderRadius: '16px',
+      } : {})
+    }}>
       {/* Sidebar */}
-      <div style={styles.sidebar}>
+      <div style={{
+        ...styles.sidebar,
+        ...(isMobile ? {
+          width: '100%',
+          display: activeConv ? 'none' : 'flex',
+          borderRight: 'none'
+        } : {})
+      }}>
         <div style={styles.sidebarHeader}>
           <h2 style={styles.sidebarTitle}>Messages</h2>
         </div>
@@ -371,10 +394,38 @@ export const Messages: React.FC = () => {
 
       {/* Chat Area */}
       {activeConv ? (
-        <div style={styles.chatArea}>
-          <div style={{ ...styles.chatHeader, cursor: 'pointer' }} onClick={() => navigate(`/profile/${(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).id}`)}>
-            <div style={styles.avatar}>
-              {(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).profileImage ? (
+        <div style={{
+          ...styles.chatArea,
+          ...(isMobile ? { display: 'flex', width: '100%' } : {})
+        }}>
+          <div style={{ ...styles.chatHeader, padding: isMobile ? '16px 20px' : '20px 32px' }}>
+            {isMobile && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); setActiveConv(null); }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  marginRight: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: COLORS.gray700
+                }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+              </button>
+            )}
+            <div 
+              style={{ display: 'flex', alignItems: 'center', flex: 1, cursor: 'pointer' }}
+              onClick={() => navigate(`/profile/${(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).id}`)}
+            >
+              <div style={{ ...styles.avatar, width: isMobile ? '42px' : '52px', height: isMobile ? '42px' : '52px', fontSize: '1.1rem', marginRight: '12px' }}>
+                {(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).profileImage ? (
                 <img src={(activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 ((activeConv.participants?.find((p: any) => p.id !== user.id) || activeConv.participants?.[0]).fullName || 'U').charAt(0).toUpperCase()
@@ -394,9 +445,13 @@ export const Messages: React.FC = () => {
                 Regarding: {activeConv.propertyId?.title || 'Property'}
               </p>
             </div>
+            </div>
           </div>
           
-          <div style={styles.messageList}>
+          <div style={{
+            ...styles.messageList,
+            padding: isMobile ? '16px' : '32px'
+          }}>
             {messages.length === 0 ? (
               <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <p style={{ color: COLORS.gray400, fontStyle: 'italic' }}>There are no messages yet.</p>
@@ -419,23 +474,23 @@ export const Messages: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div style={styles.inputArea}>
+          <div style={{ ...styles.inputArea, padding: isMobile ? '16px' : '24px 32px' }}>
             <form onSubmit={handleSendMessage} style={styles.inputForm}>
               <input
                 type="text"
                 placeholder="Type a message..."
                 value={inputText}
                 onChange={e => setInputText(e.target.value)}
-                style={styles.input}
+                style={{ ...styles.input, padding: isMobile ? '12px 16px' : '16px 24px' }}
               />
-              <button type="submit" style={styles.sendBtn} disabled={!inputText.trim()}>
+              <button type="submit" style={{ ...styles.sendBtn, padding: isMobile ? '0 20px' : '0 32px' }} disabled={!inputText.trim()}>
                 Send
               </button>
             </form>
           </div>
         </div>
       ) : (
-        <div style={styles.emptyState}>
+        <div style={{ ...styles.emptyState, display: isMobile ? 'none' : 'flex' }}>
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={COLORS.gray300} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: '16px' }}>
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
